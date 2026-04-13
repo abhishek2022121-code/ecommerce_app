@@ -8,7 +8,13 @@ class SignProvider extends ChangeNotifier {
   final TextEditingController passwordController = TextEditingController();
 
   bool _isAgreed = false;
+
   bool get isAgreed => _isAgreed;
+  bool loading = false;
+  void setloading(bool value) {
+    loading = value;
+    notifyListeners();
+  }
 
   void toggleAgreement(bool? value) {
     _isAgreed = value ?? false;
@@ -32,11 +38,11 @@ class SignProvider extends ChangeNotifier {
     return null;
   }
 
-  void submit() {
-    if (formKey.currentState!.validate() && _isAgreed) {
-      print("Account Created for: ${nameController.text}");
-    }
-  }
+  // void submit() {
+  //   if (formKey.currentState!.validate() && _isAgreed) {
+  //     print("Account Created for: ${nameController.text}");
+  //   }
+  // }
 
   @override
   void dispose() {

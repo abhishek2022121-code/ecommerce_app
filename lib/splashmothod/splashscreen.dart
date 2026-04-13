@@ -1,5 +1,6 @@
 import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/intro/velocity.dart';
+import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class Splashscreen extends StatefulWidget {
@@ -10,6 +11,7 @@ class Splashscreen extends StatefulWidget {
 }
 
 class _SplashscreenState extends State<Splashscreen> {
+  AppLocalizations get l10n => AppLocalizations.of(context)!;
   @override
   void initState() {
     // TODO: implement initState
@@ -91,8 +93,8 @@ class _SplashscreenState extends State<Splashscreen> {
             const SizedBox(height: 50),
 
             // Typography Section
-            const Text(
-              "THE VELOCITY",
+            Text(
+              l10n.splashTheVelocity,
               style: TextStyle(
                 color: AppColors.black,
                 fontSize: 32,
@@ -100,9 +102,9 @@ class _SplashscreenState extends State<Splashscreen> {
                 letterSpacing: 0.5,
               ),
             ),
-            const Text(
-              "OF STYLE",
-              style: TextStyle(
+            Text(
+              l10n.splashOfStyle,
+              style: const TextStyle(
                 color: AppColors.primary, // Using your magenta/pink color
                 fontSize: 32,
                 fontWeight: FontWeight.w900,

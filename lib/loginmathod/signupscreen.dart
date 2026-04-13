@@ -1,5 +1,6 @@
 import 'package:ecomerce/colorce/appcolors.dart';
-import 'package:ecomerce/homemothod/homescreen.dart';
+import 'package:ecomerce/bottomnave/navbaritems.dart';
+import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:ecomerce/loginmathod/loginscreen.dart';
 import 'package:ecomerce/provider/signupprovider.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ class SignupMethodScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final provider = Provider.of<SignProvider>(context);
+    // 2. Localization instance
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -22,9 +25,9 @@ class SignupMethodScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: AppColors.primary),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "QUICK FASHION",
-          style: TextStyle(
+        title: Text(
+          l10n.appTitle, // "QUICK FASHION"
+          style: const TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w900,
             fontSize: 16,
@@ -41,18 +44,18 @@ class SignupMethodScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: size.height * 0.03),
-                const Text(
-                  "CREATE",
-                  style: TextStyle(
+                Text(
+                  l10n.signupCreate, // "CREATE"
+                  style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 48,
                     fontWeight: FontWeight.w900,
                     height: 1,
                   ),
                 ),
-                const Text(
-                  "ACCOUNT",
-                  style: TextStyle(
+                Text(
+                  l10n.signupAccount, // "ACCOUNT"
+                  style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 48,
                     fontWeight: FontWeight.w900,
@@ -60,9 +63,9 @@ class SignupMethodScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: size.height * 0.02),
-                const Text(
-                  "Join the global avant-garde. Instant access to limited drops and high-velocity style updates.",
-                  style: TextStyle(
+                Text(
+                  l10n.signupSubtitle, // "Join the global avant-garde..."
+                  style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 15,
                     height: 1.4,
@@ -71,17 +74,19 @@ class SignupMethodScreen extends StatelessWidget {
                 SizedBox(height: size.height * 0.05),
 
                 // Full Name
-                _buildFieldTitle("FULL NAME"),
+                _buildFieldTitle(l10n.labelFullName), // "FULL NAME"
                 TextFormField(
                   controller: provider.nameController,
                   validator: provider.validateName,
-                  decoration: _inputDecoration("ALEXANDER MCQUEEN"),
+                  decoration: _inputDecoration(
+                    l10n.hintFullName,
+                  ), // "ALEXANDER MCQUEEN"
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: size.height * 0.03),
 
                 // Email Address
-                _buildFieldTitle("EMAIL ADDRESS"),
+                _buildFieldTitle(l10n.labelEmail), // "EMAIL ADDRESS"
                 TextFormField(
                   controller: provider.emailController,
                   validator: provider.validateEmail,
@@ -91,7 +96,7 @@ class SignupMethodScreen extends StatelessWidget {
                 SizedBox(height: size.height * 0.03),
 
                 // Password
-                _buildFieldTitle("PASSWORD"),
+                _buildFieldTitle(l10n.labelPassword), // "PASSWORD"
                 TextFormField(
                   controller: provider.passwordController,
                   validator: provider.validatePassword,
@@ -110,25 +115,25 @@ class SignupMethodScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: RichText(
-                        text: const TextSpan(
-                          style: TextStyle(
+                        text: TextSpan(
+                          style: const TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 12,
                           ),
                           children: [
-                            TextSpan(text: "I accept the "),
+                            TextSpan(text: l10n.termsIHaveRead),
                             TextSpan(
-                              text: "Terms of Service",
-                              style: TextStyle(
+                              text: l10n.termsOfService,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
                                 color: AppColors.textPrimary,
                               ),
                             ),
-                            TextSpan(text: " and acknowledge the "),
+                            TextSpan(text: l10n.termsAndAcknowledge),
                             TextSpan(
-                              text: "Privacy Policy",
-                              style: TextStyle(
+                              text: l10n.termsPrivacyPolicy, // "Privacy Policy"
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
                                 color: AppColors.textPrimary,
@@ -163,80 +168,109 @@ class SignupMethodScreen extends StatelessWidget {
                         : [],
                   ),
                   child: ElevatedButton(
-                    onPressed:
-                        //  () {
-                        //   Navigator.pushReplacement(
-                        //     context,
-                        //     MaterialPageRoute(builder: (context) => Homescreen()),
-                        //   );
-                        // },
-                        provider.submit,
+                    onPressed: () {
+                      final provider = context.read<SignProvider>();
+
+                      if (provider.formKey.currentState!.validate()) {
+                        if (provider.isAgreed) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              backgroundColor: Colors.green,
+                              content: Text("Login Successful"),
+                            ),
+                          );
+
+                          provider.setloading(true);
+                          Future.delayed(Duration(seconds: 2), () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (_) => Navbaritems()),
+                            );
+                          });
+                        } else {
+                          provider.setloading(false);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text("Please accept terms & conditions"),
+                            ),
+                          );
+                        }
+                      } else {
+                        // Validation failed
+                        provider.setloading(false);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Please fill all fields correctly"),
+                          ),
+                        );
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
                     ),
-                    child: const Text(
-                      "JOIN THE COLLECTIVE",
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
-                      ),
-                    ),
+                    child: provider.loading
+                        ? CircularProgressIndicator(color: Colors.white)
+                        : Text(
+                            l10n.btnJoinCollective,
+                            style: const TextStyle(
+                              color: AppColors.white,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
+                            ),
+                          ),
                   ),
                 ),
                 SizedBox(height: size.height * 0.05),
 
-                // Sign In Bottom Section
-                GestureDetector(
-                  onTap: () {
-                    ///so navigator
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                    );
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    decoration: BoxDecoration(
-                      color: AppColors.scaffoldBg,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      children: [
-                        const Text(
-                          "Already have an account?",
-                          style: TextStyle(
-                            color: AppColors.textLight,
-                            fontSize: 13,
-                          ),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  decoration: BoxDecoration(
+                    color: AppColors.scaffoldBg,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        l10n.footerAlreadyAccount,
+                        style: const TextStyle(
+                          color: AppColors.textLight,
+                          fontSize: 13,
                         ),
-                        const SizedBox(height: 8),
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "SIGN IN",
-                                style: TextStyle(
-                                  color: AppColors.textPrimary,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              SizedBox(width: 4),
-                              Icon(
-                                Icons.arrow_forward,
-                                size: 16,
+                      ),
+                      const SizedBox(height: 8),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              l10n.btnSignInSignup, // "SIGN IN"
+                              style: const TextStyle(
                                 color: AppColors.textPrimary,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
                               ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Icon(
+                              Icons.arrow_forward,
+                              size: 16,
+                              color: AppColors.textPrimary,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: size.height * 0.05),

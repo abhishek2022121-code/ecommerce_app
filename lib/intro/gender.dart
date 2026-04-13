@@ -1,6 +1,7 @@
 import 'package:ecomerce/colorce/appcolors.dart';
-import 'package:ecomerce/homemothod/homescreen.dart';
+import 'package:ecomerce/bottomnave/navbaritems.dart';
 import 'package:ecomerce/intro/longaugescreen.dart';
+import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:ecomerce/provider/genderprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,9 +13,11 @@ class SelectGender extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final genderProvider = Provider.of<GenderProvider>(context);
+    // 2. Localization instance
+    final l10n = AppLocalizations.of(context)!;
 
-    const String femaleImageUrl = 'assets/girl.png'; // girl here
-    const String maleImageUrl = 'assets/male.png'; //  boy here
+    const String femaleImageUrl = 'assets/girl.png';
+    const String maleImageUrl = 'assets/male.png';
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -22,14 +25,12 @@ class SelectGender extends StatelessWidget {
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.close, color: AppColors.textPrimary),
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.close, color: AppColors.textPrimary),
         ),
-        title: const Text(
-          "QUICK FASHION",
-          style: TextStyle(
+        title: Text(
+          l10n.genderStep, // Localized "QUICK FASHION"
+          style: const TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.bold,
             fontSize: 16,
@@ -41,12 +42,12 @@ class SelectGender extends StatelessWidget {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => Homescreen()),
+                MaterialPageRoute(builder: (context) => const Navbaritems()),
               );
             },
-            child: const Text(
-              "SKIP",
-              style: TextStyle(
+            child: Text(
+              l10n.btnSkip, // Localized "SKIP"
+              style: const TextStyle(
                 color: AppColors.primary,
                 fontWeight: FontWeight.bold,
               ),
@@ -60,14 +61,13 @@ class SelectGender extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: size.height * 0.02),
-            // Step indicator
             Row(
               children: [
                 Container(width: 30, height: 2, color: AppColors.primary),
                 const SizedBox(width: 8),
-                const Text(
-                  "STEP 01",
-                  style: TextStyle(
+                Text(
+                  l10n.btnSkip, // Localized "STEP 01"
+                  style: const TextStyle(
                     color: AppColors.primary,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.2,
@@ -77,10 +77,9 @@ class SelectGender extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            // Main Heading
-            const Text(
-              "WHO ARE WE\nSTYLING?",
-              style: TextStyle(
+            Text(
+              l10n.genderHeading, // Localized "WHO ARE WE STYLING?"
+              style: const TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 32,
                 fontWeight: FontWeight.w900,
@@ -88,10 +87,9 @@ class SelectGender extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // Subtitle
-            const Text(
-              "Select your preference to curate a high-velocity fashion feed tailored to your aesthetic pulse.",
-              style: TextStyle(
+            Text(
+              l10n.genderSubtitle, // Localized description
+              style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 15,
                 height: 1.4,
@@ -99,12 +97,11 @@ class SelectGender extends StatelessWidget {
             ),
             const SizedBox(height: 30),
 
-            // Image Options Section
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // Female Image Option
+                    // Female Option
                     GestureDetector(
                       onTap: () =>
                           genderProvider.selectGender(SelectedGender.female),
@@ -116,11 +113,8 @@ class SelectGender extends StatelessWidget {
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-
                               image: DecorationImage(
-                                image: AssetImage(
-                                  femaleImageUrl,
-                                ), /////////////////////////////female
+                                image: const AssetImage(femaleImageUrl),
                                 fit: BoxFit.cover,
                                 colorFilter: genderProvider.isFemaleSelected
                                     ? null
@@ -144,7 +138,7 @@ class SelectGender extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  "CURATION",
+                                  l10n.labelCuration, // Localized "CURATION"
                                   style: TextStyle(
                                     color: AppColors.primary.withOpacity(0.8),
                                     fontSize: 10,
@@ -152,9 +146,9 @@ class SelectGender extends StatelessWidget {
                                     letterSpacing: 1,
                                   ),
                                 ),
-                                const Text(
-                                  "FEMALE",
-                                  style: TextStyle(
+                                Text(
+                                  l10n.genderFemale, // Localized "FEMALE"
+                                  style: const TextStyle(
                                     color: AppColors.white,
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
@@ -163,22 +157,11 @@ class SelectGender extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Positioned(
-                            bottom: 20,
-                            right: 20,
-                            child: Icon(
-                              Icons.arrow_forward,
-                              color: genderProvider.isFemaleSelected
-                                  ? AppColors.white
-                                  : AppColors.unselected,
-                              size: 28,
-                            ),
-                          ),
                         ],
                       ),
                     ),
                     const SizedBox(height: 20),
-                    // Male Image Option
+                    // Male Option
                     GestureDetector(
                       onTap: () =>
                           genderProvider.selectGender(SelectedGender.male),
@@ -191,16 +174,14 @@ class SelectGender extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               image: DecorationImage(
-                                image: AssetImage(
-                                  maleImageUrl,
-                                ), //////////////male imageurl
+                                image: const AssetImage(maleImageUrl),
                                 fit: BoxFit.cover,
                                 colorFilter: genderProvider.isMaleSelected
                                     ? null
                                     : const ColorFilter.mode(
                                         Colors.grey,
                                         BlendMode.saturation,
-                                      ), // Grey out if not selected
+                                      ),
                               ),
                               border: Border.all(
                                 color: genderProvider.isMaleSelected
@@ -217,7 +198,7 @@ class SelectGender extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  "CURATION",
+                                  l10n.labelCuration, // Localized "CURATION"
                                   style: TextStyle(
                                     color: AppColors.primary.withOpacity(0.8),
                                     fontSize: 10,
@@ -225,26 +206,15 @@ class SelectGender extends StatelessWidget {
                                     letterSpacing: 1,
                                   ),
                                 ),
-                                const Text(
-                                  "MALE",
-                                  style: TextStyle(
+                                Text(
+                                  l10n.genderMale, // Localized "MALE"
+                                  style: const TextStyle(
                                     color: AppColors.white,
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 20,
-                            right: 20,
-                            child: Icon(
-                              Icons.arrow_forward,
-                              color: genderProvider.isMaleSelected
-                                  ? AppColors.white
-                                  : AppColors.unselected,
-                              size: 28,
                             ),
                           ),
                         ],
@@ -256,7 +226,7 @@ class SelectGender extends StatelessWidget {
               ),
             ),
 
-            // Bottom Section (Button and Dots)
+            // Bottom Section
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
@@ -274,27 +244,16 @@ class SelectGender extends StatelessWidget {
                           ? AppColors.divider
                           : null,
                       borderRadius: BorderRadius.circular(8),
-                      boxShadow:
-                          genderProvider.selectedGender != SelectedGender.none
-                          ? [
-                              BoxShadow(
-                                color: AppColors.primary.withOpacity(0.3),
-                                blurRadius: 10,
-                                offset: const Offset(0, 5),
-                              ),
-                            ]
-                          : [],
                     ),
                     child: ElevatedButton(
                       onPressed:
                           genderProvider.selectedGender != SelectedGender.none
                           ? () {
-                              ////////// navigate here
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      LanguageSelectionScreen(),
+                                      const LanguageSelectionScreen(),
                                 ),
                               );
                             }
@@ -307,7 +266,7 @@ class SelectGender extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        "CONFIRM SELECTION",
+                        l10n.btnConfirmSelection, // Localized "CONFIRM SELECTION"
                         style: TextStyle(
                           color:
                               genderProvider.selectedGender !=
@@ -322,14 +281,15 @@ class SelectGender extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    "YOU CAN CHANGE THIS ANYTIME IN SETTINGS",
-                    style: TextStyle(
+                    l10n.genderChangeNote, // Localized "YOU CAN CHANGE THIS ANYTIME..."
+                    style: const TextStyle(
                       color: AppColors.textLight,
                       fontSize: 10,
                       letterSpacing: 0.5,
                     ),
                   ),
                   const SizedBox(height: 20),
+                  // Dots
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

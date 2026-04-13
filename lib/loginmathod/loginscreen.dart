@@ -1,8 +1,11 @@
+import 'package:ecomerce/bottomnave/navbaritems.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:ecomerce/loginmathod/signupscreen.dart';
 import 'package:ecomerce/provider/loginprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// 1. Localization import
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -11,6 +14,8 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final loginProvider = Provider.of<LoginProvider>(context);
+
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -21,9 +26,9 @@ class LoginScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: AppColors.primary),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "QUICK FASHION",
-          style: TextStyle(
+        title: Text(
+          l10n.appTitle,
+          style: const TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w900,
             fontSize: 16,
@@ -41,9 +46,9 @@ class LoginScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: size.height * 0.04),
-                  const Text(
-                    "LOGIN",
-                    style: TextStyle(
+                  Text(
+                    l10n.loginHeading, // "LOGIN"
+                    style: const TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 42,
                       fontWeight: FontWeight.w900,
@@ -51,9 +56,9 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    "Access your curated style dashboard.",
-                    style: TextStyle(
+                  Text(
+                    l10n.loginSubtitle, // "Access your curated style dashboard."
+                    style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 16,
                     ),
@@ -61,9 +66,9 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(height: size.height * 0.05),
 
                   // Email Input
-                  const Text(
-                    "EMAIL ADDRESS",
-                    style: TextStyle(
+                  Text(
+                    l10n.labelEmail, // "EMAIL ADDRESS"
+                    style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1,
@@ -72,7 +77,7 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   _buildInputField(
                     loginProvider.emailController,
-                    "name@style.com",
+                    l10n.hintEmail, // "name@style.com"
                     false,
                   ),
 
@@ -80,11 +85,12 @@ class LoginScreen extends StatelessWidget {
 
                   // Password Input
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween, // Alignment fixed
                     children: [
-                      const Text(
-                        "PASSWORD",
-                        style: TextStyle(
+                      Text(
+                        l10n.labelPassword, // "PASSWORD"
+                        style: const TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1,
@@ -92,9 +98,9 @@ class LoginScreen extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {},
-                        child: const Text(
-                          "FORGOT PASSWORD?",
-                          style: TextStyle(
+                        child: Text(
+                          l10n.btnForgotPass, // "FORGOT PASSWORD?"
+                          style: const TextStyle(
                             color: AppColors.primary,
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
@@ -106,7 +112,7 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   _buildInputField(
                     loginProvider.passwordController,
-                    "••••••••",
+                    l10n.hintPassword, // "••••••••"
                     true,
                   ),
 
@@ -128,7 +134,33 @@ class LoginScreen extends StatelessWidget {
                       ],
                     ),
                     child: ElevatedButton(
-                      onPressed: loginProvider.login,
+                      onPressed: () {
+                        final email = loginProvider.emailController.text.trim();
+                        final password = loginProvider.passwordController.text
+                            .trim();
+
+                        if (email.isNotEmpty && password.isNotEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("login successfuly"),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Navbaritems(),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Please fill all fields"),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
@@ -137,9 +169,9 @@ class LoginScreen extends StatelessWidget {
                           ? const CircularProgressIndicator(
                               color: AppColors.white,
                             )
-                          : const Text(
-                              "SIGN IN",
-                              style: TextStyle(
+                          : Text(
+                              l10n.btnSignIn, // "SIGN IN"
+                              style: const TextStyle(
                                 color: AppColors.white,
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 1,
@@ -157,8 +189,8 @@ class LoginScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
-                          "OR CONTINUE WITH",
-                          style: TextStyle(
+                          l10n.labelOrContinue, // "OR CONTINUE WITH"
+                          style: const TextStyle(
                             color: AppColors.textLight,
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
@@ -174,9 +206,13 @@ class LoginScreen extends StatelessWidget {
                   // Social Buttons
                   Row(
                     children: [
-                      Expanded(child: _buildSocialButton("GOOGLE")),
+                      Expanded(
+                        child: _buildSocialButton(l10n.btnGoogle),
+                      ), // "GOOGLE"
                       const SizedBox(width: 16),
-                      Expanded(child: _buildSocialButton("iOS")),
+                      Expanded(
+                        child: _buildSocialButton(l10n.btnApple),
+                      ), // "iOS"
                     ],
                   ),
 
@@ -188,22 +224,25 @@ class LoginScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SignupMethodScreen(),
+                          builder: (context) => const SignupMethodScreen(),
                         ),
                       );
                     },
                     child: Center(
                       child: RichText(
-                        text: const TextSpan(
-                          style: TextStyle(
+                        text: TextSpan(
+                          style: const TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 13,
                           ),
                           children: [
-                            TextSpan(text: "New to Quick Fashion? "),
                             TextSpan(
-                              text: "Create Account",
-                              style: TextStyle(
+                              text: l10n.footerNewTo,
+                            ), // "New to Quick Fashion? "
+                            TextSpan(
+                              text:
+                                  l10n.footerCreateAccount, // "Create Account"
+                              style: const TextStyle(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -226,9 +265,7 @@ class LoginScreen extends StatelessWidget {
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                        'assets/girl.png',
-                      ), // Replace with AI image
+                      image: AssetImage('assets/girl.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -237,7 +274,7 @@ class LoginScreen extends StatelessWidget {
                   bottom: 20,
                   left: 20,
                   child: Text(
-                    "SPRING / SUMMER EDITION\nNO. 24",
+                    l10n.bannerEdition, // "SPRING / SUMMER EDITION..."
                     style: TextStyle(
                       color: AppColors.textPrimary.withOpacity(0.6),
                       fontSize: 10,

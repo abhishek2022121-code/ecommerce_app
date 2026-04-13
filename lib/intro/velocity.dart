@@ -1,13 +1,20 @@
 import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/intro/selectstyle.dart';
+import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+// 1. Localization import karein
 
 class Velocitypage extends StatelessWidget {
   const Velocitypage({super.key});
 
+  // 2. Getter define karein (bina context parameter ke, as a member)
+  // Note: StatelessWidget mein context access karne ke liye AppLocalizations.of(context) seedhe build mein likhna behtar hota hai.
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    // 3. Build ke andar instance le lein
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldBg,
@@ -28,46 +35,8 @@ class Velocitypage extends StatelessWidget {
               children: [
                 SizedBox(height: size.height * 0.1),
 
-                // Logo Circle
-                // Container(
-                //   height: size.width * 0.45,
-                //   width: size.width * 0.45,
-                //   decoration: BoxDecoration(
-                //     shape: BoxShape.circle,
-                //     color: const Color(0xFF2D3436),
-                //     border: Border.all(color: AppColors.border, width: 2),
-                //   ),
-                //   child: Center(
-                //     child: Column(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         ///logo here adding///////////////////////////////////////
-                //         const Icon(Icons.home, color: Colors.amber, size: 30),
-                //         const Text(
-                //           "QUICK",
-                //           style: TextStyle(
-                //             color: AppColors.white,
-                //             fontSize: 24,
-                //             fontWeight: FontWeight.bold,
-                //             letterSpacing: 2,
-                //           ),
-                //         ),
-                //         Text(
-                //           "FASHION",
-                //           style: TextStyle(
-                //             color: AppColors.white.withOpacity(0.8),
-                //             fontSize: 10,
-                //             letterSpacing: 4,
-                //           ),
-                //         ),
-
-                //         ///logo here adding///////////////////////////////////////
-                //       ],
-                //     ),
-                //   ),
-                // ),
                 Image(
-                  image: AssetImage('assets/applogo.png'),
+                  image: const AssetImage('assets/applogo.png'),
                   height: size.width * 0.5,
                   width: size.width * 0.5,
                 ),
@@ -75,17 +44,17 @@ class Velocitypage extends StatelessWidget {
                 SizedBox(height: size.height * 0.08),
 
                 // Headline
-                const Text(
-                  "THE VELOCITY",
-                  style: TextStyle(
+                Text(
+                  l10n.splashTheVelocity, // Localized
+                  style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 28,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                const Text(
-                  "OF STYLE",
-                  style: TextStyle(
+                Text(
+                  l10n.splashOfStyle, // Localized
+                  style: const TextStyle(
                     color: AppColors.primary,
                     fontSize: 28,
                     fontWeight: FontWeight.w900,
@@ -96,9 +65,9 @@ class Velocitypage extends StatelessWidget {
 
                 // Subtitle
                 Text(
-                  "High-speed curation for the modern vanguard. Experience the digital pulse of fashion.",
+                  l10n.velocitySubtitle, // Localized
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 14,
                     height: 1.5,
@@ -124,11 +93,10 @@ class Velocitypage extends StatelessWidget {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      ///f you want to navite , use this poit
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SelectStyleScreen(),
+                          builder: (context) => const SelectStyleScreen(),
                         ),
                       );
                     },
@@ -139,18 +107,18 @@ class Velocitypage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "ENTER THE RUNWAY",
-                          style: TextStyle(
+                          l10n.btnEnterRunway, // Localized
+                          style: const TextStyle(
                             color: AppColors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 8),
-                        Icon(
+                        const SizedBox(width: 8),
+                        const Icon(
                           Icons.arrow_forward,
                           color: AppColors.white,
                           size: 18,
@@ -164,8 +132,8 @@ class Velocitypage extends StatelessWidget {
 
                 // Member Options
                 Text(
-                  "MEMBER EXCLUSIVE",
-                  style: TextStyle(
+                  l10n.labelMemberExclusive, // Localized
+                  style: const TextStyle(
                     color: AppColors.textLight,
                     fontSize: 10,
                     letterSpacing: 1,
@@ -176,10 +144,10 @@ class Velocitypage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
-                      onPressed: () {}, ////// signin mathod here
-                      child: const Text(
-                        "SIGN IN",
-                        style: TextStyle(
+                      onPressed: () {},
+                      child: Text(
+                        l10n.btnSignIn, // Localized
+                        style: const TextStyle(
                           color: AppColors.primary,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
@@ -188,10 +156,10 @@ class Velocitypage extends StatelessWidget {
                     ),
                     const Text("•", style: TextStyle(color: AppColors.border)),
                     TextButton(
-                      onPressed: () {}, ////club join here ////////////////////
-                      child: const Text(
-                        "JOIN THE CLUB",
-                        style: TextStyle(
+                      onPressed: () {},
+                      child: Text(
+                        l10n.btnJoinClub, // Localized
+                        style: const TextStyle(
                           color: AppColors.primary,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
@@ -228,18 +196,18 @@ class Velocitypage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: AppColors.divider),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.verified_outlined,
                         color: Color(0xFF00796B),
                         size: 14,
                       ),
-                      SizedBox(width: 6),
+                      const SizedBox(width: 6),
                       Text(
-                        "CERTIFIED SUSTAINABLE PARTNERS",
-                        style: TextStyle(
+                        l10n.labelSustainable, // Localized
+                        style: const TextStyle(
                           color: Color(0xFF00796B),
                           fontSize: 9,
                           fontWeight: FontWeight.bold,

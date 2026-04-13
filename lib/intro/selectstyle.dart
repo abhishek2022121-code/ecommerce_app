@@ -1,6 +1,7 @@
 import 'package:ecomerce/colorce/appcolors.dart';
-import 'package:ecomerce/homemothod/homescreen.dart';
+import 'package:ecomerce/bottomnave/navbaritems.dart';
 import 'package:ecomerce/intro/ageselect.dart';
+import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:ecomerce/provider/selectstyleprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,18 +13,21 @@ class SelectStyleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final provider = Provider.of<SelectStylesProvider>(context);
+    // Localization instance
+    final l10n = AppLocalizations.of(context)!;
 
+    // Items list with localized names from your ARB keys
     final List<Map<String, dynamic>> items = [
-      {"name": "Streetwear", "icon": Icons.shopping_bag},
-      {"name": "Luxury", "icon": Icons.diamond_outlined},
-      {"name": "Ethical Fashion", "icon": Icons.eco_outlined},
-      {"name": "Accessories", "icon": Icons.watch_outlined},
-      {"name": "Avant-Garde", "icon": Icons.auto_awesome_outlined},
-      {"name": "Footwear", "icon": Icons.store},
-      {"name": "Vintage", "icon": Icons.edit_outlined},
-      {"name": "Minimalist", "icon": Icons.remove},
-      {"name": "Activewear", "icon": Icons.fitness_center},
-      {"name": "Runway", "icon": Icons.checkroom},
+      {"name": l10n.styleStreetwear, "icon": Icons.shopping_bag},
+      {"name": l10n.styleLuxury, "icon": Icons.diamond_outlined},
+      {"name": l10n.styleEthical, "icon": Icons.eco_outlined},
+      {"name": l10n.styleAccessories, "icon": Icons.watch_outlined},
+      {"name": l10n.styleAvantGarde, "icon": Icons.auto_awesome_outlined},
+      {"name": l10n.styleFootwear, "icon": Icons.store},
+      {"name": l10n.styleVintage, "icon": Icons.edit_outlined},
+      {"name": l10n.styleMinimalist, "icon": Icons.remove},
+      {"name": l10n.styleActivewear, "icon": Icons.fitness_center},
+      {"name": l10n.styleRunway, "icon": Icons.checkroom},
     ];
 
     return Scaffold(
@@ -35,11 +39,11 @@ class SelectStyleScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.close, color: AppColors.textPrimary),
+          icon: const Icon(Icons.close, color: AppColors.textPrimary),
         ),
-        title: const Text(
-          "QUICK FASHION",
-          style: TextStyle(
+        title: Text(
+          l10n.appTitle, // "QUICK FASHION"
+          style: const TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w900,
             fontSize: 14,
@@ -52,12 +56,12 @@ class SelectStyleScreen extends StatelessWidget {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => Homescreen()),
+                MaterialPageRoute(builder: (context) => const Navbaritems()),
               );
             },
-            child: const Text(
-              "SKIP",
-              style: TextStyle(
+            child: Text(
+              l10n.btnSkip, // "SKIP"
+              style: const TextStyle(
                 color: AppColors.primary,
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
@@ -72,35 +76,35 @@ class SelectStyleScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            const Text(
-              "CURATE YOUR FEED",
-              style: TextStyle(
+            Text(
+              l10n.styleCurateLabel, // "CURATE YOUR FEED"
+              style: const TextStyle(
                 color: AppColors.primary,
                 fontSize: 11,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1,
               ),
             ),
-            const Text(
-              "TAILOR YOUR",
-              style: TextStyle(
+            Text(
+              l10n.styleTailorTitle, // "TAILOR YOUR"
+              style: const TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 32,
                 fontWeight: FontWeight.w900,
               ),
             ),
-            const Text(
-              "FASHION PULSE",
-              style: TextStyle(
+            Text(
+              l10n.stylePulseTitle, // "FASHION PULSE"
+              style: const TextStyle(
                 color: AppColors.primary,
                 fontSize: 32,
                 fontWeight: FontWeight.w900,
               ),
             ),
             const SizedBox(height: 15),
-            const Text(
-              "Select at least three categories to build your personalized editorial stream. High-speed fashion starts here.",
-              style: TextStyle(
+            Text(
+              l10n.styleSubtitle, // "Select at least three categories..."
+              style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 14,
                 height: 1.4,
@@ -138,7 +142,7 @@ class SelectStyleScreen extends StatelessWidget {
                           children: [
                             Text(
                               item['name'],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: AppColors.textPrimary,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
@@ -177,29 +181,34 @@ class SelectStyleScreen extends StatelessWidget {
               ),
               child: ElevatedButton(
                 onPressed: () {
-                  //navigation is here where you want to go
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => AgeSelectionScreen()),
+                    MaterialPageRoute(
+                      builder: (_) => const AgeSelectionScreen(),
+                    ),
                   );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Launch My Pulse",
-                      style: TextStyle(
+                      l10n.btnLaunchPulse, // "Launch My Pulse"
+                      style: const TextStyle(
                         color: AppColors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: 8),
-                    Icon(Icons.arrow_forward, color: AppColors.white, size: 20),
+                    const SizedBox(width: 8),
+                    const Icon(
+                      Icons.arrow_forward,
+                      color: AppColors.white,
+                      size: 20,
+                    ),
                   ],
                 ),
               ),

@@ -1,9 +1,11 @@
 import 'package:ecomerce/colorce/appcolors.dart';
-import 'package:ecomerce/homemothod/homescreen.dart';
+import 'package:ecomerce/bottomnave/navbaritems.dart';
 import 'package:ecomerce/intro/gender.dart';
+import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:ecomerce/provider/ageselectprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// 1. Localization import karein
 
 class AgeSelectionScreen extends StatelessWidget {
   const AgeSelectionScreen({super.key});
@@ -12,13 +14,15 @@ class AgeSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final provider = Provider.of<AgeSelectProvider>(context);
+    // 2. Localization instance
+    final l10n = AppLocalizations.of(context)!;
 
-    // Age brackets data
+    // Age brackets data localized labels ke saath
     final List<Map<String, String>> ageBrackets = [
-      {"label": "GEN Z\nNEXT", "range": "0-18"},
-      {"label": "PEAK\nKINETIC", "range": "19-24"},
-      {"label": "EDITORIAL\nMILLENNIAL", "range": "25-40"},
-      {"label": "TIMELESS\nAUTHORITY", "range": "40+"},
+      {"label": l10n.ageLabelGenZ, "range": "0-18"},
+      {"label": l10n.ageLabelKinetic, "range": "19-24"},
+      {"label": l10n.ageLabelMillennial, "range": "25-40"},
+      {"label": l10n.ageLabelTimeless, "range": "40+"},
     ];
 
     return Scaffold(
@@ -30,9 +34,9 @@ class AgeSelectionScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.close, color: AppColors.textPrimary),
         ),
-        title: const Text(
-          "QUICK FASHION",
-          style: TextStyle(
+        title: Text(
+          l10n.appTitle, // Localized
+          style: const TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w900,
             fontSize: 14,
@@ -45,12 +49,12 @@ class AgeSelectionScreen extends StatelessWidget {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const Homescreen()),
+                MaterialPageRoute(builder: (context) => const Navbaritems()),
               );
             },
-            child: const Text(
-              "SKIP",
-              style: TextStyle(
+            child: Text(
+              l10n.btnSkip, // Localized
+              style: const TextStyle(
                 color: AppColors.primary,
                 fontWeight: FontWeight.bold,
               ),
@@ -58,9 +62,7 @@ class AgeSelectionScreen extends StatelessWidget {
           ),
         ],
       ),
-      // SafeArea notch aur bottom bars se bachata hai
       body: SafeArea(
-        // SingleChildScrollView overflow error ko fix karta hai
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Padding(
@@ -70,25 +72,25 @@ class AgeSelectionScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 RichText(
-                  text: const TextSpan(
-                    style: TextStyle(
+                  text: TextSpan(
+                    style: const TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w900,
                       color: AppColors.textPrimary,
                     ),
                     children: [
-                      TextSpan(text: "Tailor your "),
+                      TextSpan(text: l10n.ageTitleStart), // "Tailor your "
                       TextSpan(
-                        text: "Pulse.",
-                        style: TextStyle(color: AppColors.primary),
+                        text: l10n.ageTitleEnd, // "Pulse."
+                        style: const TextStyle(color: AppColors.primary),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  "Our editorial engine curates trends based on your generation's velocity. Select your bracket.",
-                  style: TextStyle(
+                Text(
+                  l10n.ageSubtitle, // Localized
+                  style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 14,
                     height: 1.4,
@@ -172,17 +174,17 @@ class AgeSelectionScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "VERIFIED CHOICE",
-                              style: TextStyle(
+                            Text(
+                              l10n.labelVerifiedChoice, // Localized
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              "Over 2.4M fashionistas use these demographics to fuel their personal feed daily.",
-                              style: TextStyle(
+                              l10n.labelVerifiedChoice, // Localized
+                              style: const TextStyle(
                                 color: AppColors.textSecondary,
                                 fontSize: 12,
                               ),
@@ -208,7 +210,6 @@ class AgeSelectionScreen extends StatelessWidget {
                   ),
                 ),
 
-                // Spacer() ki jagah fixed SizedBox scrollview mein zaroori hai
                 const SizedBox(height: 40),
 
                 // Confirm Button
@@ -235,9 +236,9 @@ class AgeSelectionScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text(
-                      "CONFIRM SELECTION",
-                      style: TextStyle(
+                    child: Text(
+                      l10n.btnConfirmSelection, // Localized
+                      style: const TextStyle(
                         color: AppColors.white,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1,
@@ -248,7 +249,6 @@ class AgeSelectionScreen extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
-                // Pagination indicators
                 Center(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -265,7 +265,7 @@ class AgeSelectionScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10), // Bottom safe space
+                const SizedBox(height: 10),
               ],
             ),
           ),
