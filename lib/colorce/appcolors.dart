@@ -52,3 +52,8 @@ class ColorStyle {
 
   static Color verifiedBoxBg = const Color(0xFFF1F1F1).withOpacity(0.5);
 }
+
+
+
+
+//Color(0xFFD81B60).  seleected color

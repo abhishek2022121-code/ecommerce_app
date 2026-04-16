@@ -1,4 +1,5 @@
 import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/intro/longaugescreen.dart';
 import 'package:ecomerce/intro/selectstyle.dart';
 import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +97,8 @@ class Velocitypage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SelectStyleScreen(),
+                          builder: (context) => const LanguageSelectionScreen(),
+                          //SelectStyleScreen(),
                         ),
                       );
                     },

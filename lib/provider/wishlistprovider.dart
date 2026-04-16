@@ -24,7 +24,7 @@ class Product {
   });
 }
 
-class Categoriprovider extends ChangeNotifier {
+class Wishlistprovider extends ChangeNotifier {
   final List<Product> _products = [
     Product(
       brand: "AURELIA STUDIO",

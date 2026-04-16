@@ -5,7 +5,6 @@ import 'package:ecomerce/loginmathod/signupscreen.dart';
 import 'package:ecomerce/provider/loginprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// 1. Localization import
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

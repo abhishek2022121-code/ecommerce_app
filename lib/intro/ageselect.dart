@@ -1,6 +1,7 @@
 import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/bottomnave/navbaritems.dart';
 import 'package:ecomerce/intro/gender.dart';
+import 'package:ecomerce/intro/selectstyle.dart';
 import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:ecomerce/provider/ageselectprovider.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,11 @@ class AgeSelectionScreen extends StatelessWidget {
       backgroundColor: AppColors.scaffoldBg,
       appBar: AppBar(
         backgroundColor: AppColors.scaffoldBg,
-        elevation: 0,
+        elevation: 4.0,
+
+        shadowColor: AppColors.black.withOpacity(0.3),
+
+        //elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.close, color: AppColors.textPrimary),
@@ -225,7 +230,8 @@ class AgeSelectionScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SelectGender(),
+                          builder: (context) => const SelectStyleScreen(),
+                          //SelectGender(),
                         ),
                       );
                     },

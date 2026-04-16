@@ -1,3 +1,4 @@
+import 'package:ecomerce/productlisting/womenscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
 
@@ -7,264 +8,733 @@ class Homescreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final hp = size.width * 0.05;
-
+    final double hp = size.width * 0.05;
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
+      backgroundColor: const Color(0xFFFDF7F8),
+
       appBar: AppBar(
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        leadingWidth: 40,
-        leading: Image.asset('assets/applogo.png', height: size.height * 0.025),
+        backgroundColor: ColorStyle.scaffoldBg,
+        elevation: 4.0,
+
+        shadowColor: AppColors.black.withOpacity(0.3),
+
+        centerTitle: true,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset('assets/applogo.png'),
+        ),
         title: const Text(
           "QUICK FASHION",
           style: TextStyle(
-            fontWeight: FontWeight.w800,
-            fontSize: 14,
-            color: AppColors.black,
+            color: ColorStyle.textPrimary,
+            fontWeight: FontWeight.w900,
+            fontSize: 18,
           ),
         ),
         actions: const [
-          Icon(Icons.search, color: AppColors.black),
+          Icon(Icons.search, color: ColorStyle.primary),
           SizedBox(width: 15),
-          Icon(Icons.favorite_border, color: AppColors.black),
+          Icon(Icons.shopping_bag_outlined, color: ColorStyle.primary),
           SizedBox(width: 15),
         ],
-        centerTitle: true,
       ),
-
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //  _buildStories(size),
-            _buildHero(size, hp),
+            //offer container
+            _buildHeroBanner(size, hp),
+            _buildCurationHeader(),
+            //story secsion
+            _buildCurationStories(hp),
 
-            _sectionTitle("CURATION BY STYLE", hp),
-            // Text('Discover what defines you'),
-            _buildCategories(size),
+            //text and view all part
+            _buildSectionHeader("BRAND OF THE DAY", hp, action: "VIEW ALL"),
+            //h&m container
+            _buildBrandGrid(size, hp),
+            // gucci: the renaissance
+            _buildGucciSpotlight(size, hp),
 
-            _sectionTitle("BRAND OF THE DAY", hp),
-            _buildBrandCard(size, hp),
+            // 5. Best of Quick Fashion (Horizontal)
+            _buildSectionHeader(
+              "BEST OF QUICK\n FASHION",
+              hp,
+              action: "SHOP NOW",
+            ),
+            _buildProductList(size),
 
-            const SizedBox(height: 10),
-            _buildMiniGrid(hp),
+            //new arrivals and drop
+            _buildSectionHeader("NEW ARRIVALS", hp, action: "DROP #1"),
+            _buildNewArrivalCard(
+              size,
+              hp,
+              "THE SILK CAPSULE",
+              "SUSTAINABLE LUXE",
+            ),
+            _buildNewArrivalCard(size, hp, "PREMIUM BASICS", "MINIMALIST EDIT"),
 
-            _buildSpotlight(size, hp),
-
-            _sectionTitle("BEST OF QUICK FASHION", hp, action: true),
-            _buildProducts(size),
-
-            _sectionTitle("NEW ARRIVALS", hp, action: true),
-            _buildBigCards(size, hp),
-
-            _buildNewsletter(size, hp),
-            const SizedBox(height: 40),
+            // 7. Newsletter Section (The Pinkish Block)
+            _buildNewsletter(hp),
+            const SizedBox(height: 50),
           ],
         ),
       ),
     );
   }
 
-  // ---------------- UI ----------------
+  // --- UI COMPONENTS ---
 
-  Widget _buildStories(Size size) {
-    final items = ["MEN", "WOMEN", "KIDS", "BEAUTY"];
-
-    return SizedBox(
-      height: size.height * 0.13,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        itemCount: items.length,
-        itemBuilder: (context, i) {
-          return Padding(
-            padding: const EdgeInsets.only(right: 14),
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: size.width * 0.07,
-                  backgroundImage: const AssetImage("assets/girl.png"),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  items[i],
-                  style: TextStyle(
-                    fontSize: size.width * 0.025,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildHero(Size size, double hp) {
-    return Container(
-      height: size.height * 0.28,
-      margin: EdgeInsets.symmetric(horizontal: hp, vertical: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        image: DecorationImage(
-          image: AssetImage('assets/girl.png'),
-          fit: BoxFit.cover,
-        ),
-        // gradient: AppColors.primaryGradient,
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(size.width * 0.05),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "SEASONAL EXCLUSIVE",
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: size.width * 0.025,
-              ),
-            ),
-            const Spacer(),
-            Text(
-              "END OF\nSEASON SALE",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: size.width * 0.08,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Text("60-80%"),
-                ),
-                const SizedBox(width: 10),
-                const Text("SHOP NOW →", style: TextStyle(color: Colors.white)),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCategories(Size size) {
+  Widget _buildSectionHeader(String title, double hp, {String? action}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.fromLTRB(hp, 15, hp, 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(
-          4,
-          (index) => Column(
-            children: [
-              CircleAvatar(
-                radius: size.width * 0.06,
-                backgroundImage: const AssetImage("assets/girl.png"),
-              ),
-              const SizedBox(height: 6),
-              const Text("MEN", style: TextStyle(fontSize: 10)),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBrandCard(Size size, double hp) {
-    return Container(
-      height: size.height * 0.25,
-      margin: EdgeInsets.symmetric(horizontal: hp),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
-        image: const DecorationImage(
-          image: AssetImage("assets/girl.png"),
-          fit: BoxFit.cover,
-        ),
-      ),
-      alignment: Alignment.bottomLeft,
-      padding: const EdgeInsets.all(15),
-      child: const Text(
-        "H&M ESSENTIALS",
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget _buildMiniGrid(double hp) {
-    return GridView.count(
-      padding: EdgeInsets.all(hp),
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
-      children: List.generate(
-        4,
-        (index) => ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.asset("assets/girl.png", fit: BoxFit.cover),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSpotlight(Size size, double hp) {
-    return Padding(
-      padding: EdgeInsets.all(hp),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "SPOTLIGHT ON",
-            style: TextStyle(color: AppColors.primary),
+          Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+              fontSize: 18,
+              letterSpacing: -0.5,
+            ),
           ),
-          const SizedBox(height: 8),
-          const Text(
-            "GUCCI: THE RENAISSANCE",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          if (action != null)
+            Text(
+              action,
+              style: const TextStyle(
+                color: ColorStyle.primary,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCurationHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, // Aligns text to the left
+        children: const [
+          Text(
+            "Curation by Style",
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF4A3239), // Deep plum color
+              letterSpacing: -0.5,
+            ),
           ),
-          const SizedBox(height: 10),
-          const Text("Explore the latest collection..."),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              _btn("EXPLORE", true),
-              const SizedBox(width: 10),
-              _btn("VIEW", false),
-            ],
-          ),
-          const SizedBox(height: 15),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image.asset("assets/girl.png"),
+          SizedBox(height: 4),
+          Text(
+            "Discover what defines you",
+            style: TextStyle(
+              fontSize: 16,
+              color: Color(0xFF8E737B), // Muted mauve/brown color
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildProducts(Size size) {
+  Widget _buildCurationStories(double hp) {
+    final List<String> cats = ["MEN", "WOMEN", "KIDS", "BEAUTY"];
+    return Container(
+      height: 110,
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.only(left: hp),
+        itemCount: cats.length,
+        itemBuilder: (context, i) => Padding(
+          padding: const EdgeInsets.only(right: 20),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => WomenScreen()),
+              );
+            },
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: ColorStyle.primary, width: 1.5),
+                  ),
+                  child: const CircleAvatar(
+                    radius: 32,
+                    backgroundImage: AssetImage("assets/girl.png"),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  cats[i],
+                  style: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeroBanner(Size size, double hp) {
+    return Container(
+      height: size.height * 0.35,
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(horizontal: hp),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        image: const DecorationImage(
+          image: AssetImage("assets/girl.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+          gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            colors: [Colors.black.withOpacity(0.7), Colors.transparent],
+          ),
+        ),
+        padding: const EdgeInsets.all(25),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "SEASONAL EXCLUSIVE",
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.2,
+              ),
+            ),
+            const Text(
+              "END OF\nREASON\nSALE",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 38,
+                fontWeight: FontWeight.w900,
+                height: 0.9,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                _pillButton("50-80% OFF", Colors.white, ColorStyle.primary),
+                const SizedBox(width: 20),
+                const Text(
+                  "SHOP NOW",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Icon(Icons.arrow_forward, color: Colors.white, size: 18),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBrandGrid(Size size, double hp) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: hp),
+      child: Column(
+        children: [
+          _brandCard(size, "H&M ESSENTIALS", "URBAN LEGEND", height: 280),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _brandCard(
+                  size,
+                  "NIKE AIR",
+                  "",
+                  height: 180,
+                  small: true,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _brandCard(
+                  size,
+                  "ADIDAS ORIG",
+                  "",
+                  height: 180,
+                  small: true,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _brandCard(
+                  size,
+                  "ZARA MAN",
+                  "",
+                  height: 180,
+                  small: true,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _brandCard(
+                  size,
+                  "FOREVER 21",
+                  "",
+                  height: 180,
+                  small: true,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGucciSpotlight(Size size, double hp) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: hp, vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 30), // Top/Bottom padding
+      decoration: BoxDecoration(
+        // Light pinkish background as seen in the screenshot
+        color: const Color(0xFFFDF0F3),
+        borderRadius: BorderRadius.circular(35),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Text Content Padding
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: hp),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "SPOTLIGHT ON",
+                  style: TextStyle(
+                    color: Color(0xFFD32F2F), // Darker shade for 'Spotlight'
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  "GUCCI: THE\nRENAISSANCE",
+                  style: TextStyle(
+                    fontSize: 34,
+                    fontWeight: FontWeight.w900,
+                    height: 1.0,
+                    color: Color(0xFF33232D), // Deep brown/purple text
+                  ),
+                ),
+                const SizedBox(height: 15),
+                const Text(
+                  "Explore the latest collection\n that blends Italian\n craftsmanship with modern\n street surrealism.",
+                  style: TextStyle(
+                    color: Color(0xFF7D6E77),
+                    height: 1.4,
+                    fontSize: 15,
+                  ),
+                ),
+                const SizedBox(height: 25),
+
+                // Buttons Row
+                Row(
+                  children: [
+                    // Dark Pill Button
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 25,
+                        vertical: 15,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF422734),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: const Text(
+                        "EXPLORE\nBRAND",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    // Text Button with underline
+                    Column(
+                      children: [
+                        const Text(
+                          "VIEW\nCOLLECTION",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFFD32F2F),
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Container(
+                          height: 2,
+                          width: 60,
+                          color: const Color(0xFFD32F2F),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 30),
+
+          // Image with specific border radius from screenshot
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: hp * 0.5),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(25),
+              child: Image.asset(
+                "assets/girl.png", // Replace with your image
+                height: 400,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNewArrivalCard(Size size, double hp, String title, String sub) {
+    return Container(
+      // Pure card ka background color screenshot jaisa rakha hai
+      color: const Color(0xFFFDF0F3),
+      padding: EdgeInsets.symmetric(horizontal: hp, vertical: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Image Container with Stack
+          ClipRRect(
+            borderRadius: BorderRadius.circular(
+              30,
+            ), // Extra rounded as per image
+            child: Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                Image.asset(
+                  "assets/girl.png",
+                  height:
+                      420, // Height image ke proportion ke hisaab se set ki hai
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+                // Floating Action Button (+ Icon)
+                // Padding(
+                //   padding: const EdgeInsets.all(12.0),
+                //   child: Container(
+                //     height: 50,
+                //     width: 50,
+                //     decoration: const BoxDecoration(
+                //       color: Color(
+                //         0xFFA6264C,
+                //       ), // Screenshot ka exact maroonish-pink color
+                //       shape: BoxShape.circle,
+                //       boxShadow: [
+                //         BoxShadow(
+                //           color: Colors.black26,
+                //           blurRadius: 10,
+                //           offset: Offset(0, 4),
+                //         ),
+                //       ],
+                //     ),
+                //     child: const Icon(Icons.add, color: Colors.white, size: 28),
+                //   ),
+                // ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          // Subtitle (e.g., SUSTAINABLE LUXE)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    sub.toUpperCase(),
+                    style: const TextStyle(
+                      color: Color(0xFFA6264C), // Same color as the + button
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+
+                  const SizedBox(height: 4),
+
+                  // Title (e.g., THE SILK CAPSULE)
+                  Text(
+                    title.toUpperCase(),
+                    style: const TextStyle(
+                      color: Color(0xFF33232D), // Deep dark brown text
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: const BoxDecoration(
+                    color: Color(
+                      0xFFA6264C,
+                    ), // Screenshot ka exact maroonish-pink color
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 10,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(Icons.add, color: Colors.white, size: 28),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNewsletter(double hp) {
+    return Container(
+      margin: EdgeInsets.all(hp),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),
+      decoration: BoxDecoration(
+        // A soft pinkish background
+        color: const Color(0xFFFDE4E9),
+        borderRadius: BorderRadius.circular(35),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Main Heading
+          const Text(
+            "JOIN THE QUICK\nFASHION NOW !!!",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w900,
+              color: Color(0xFF4A3239), // Dark brown/plum text
+              height: 1.2,
+            ),
+          ),
+          const SizedBox(height: 15),
+
+          // Body Description
+          const Text(
+            "Subscribe to receive early access to collection drops, exclusive editorial content, and special event invites.",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xFF4A3239),
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 30),
+
+          // Email Input Field
+          TextField(
+            decoration: InputDecoration(
+              hintText: "Your email address",
+              hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 18,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30), // Pill-shaped
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+
+          // Sign In Button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF4A3239), // Dark button color
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 18),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30), // Pill-shaped
+                ),
+                elevation: 0,
+              ),
+              child: const Text(
+                "SIGNIN NOW",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.1,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --- HELPERS ---
+  Widget _brandCard(
+    Size size,
+    String title,
+    String sub, {
+    required double height,
+    bool small = false,
+  }) {
+    return Container(
+      height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        image: const DecorationImage(
+          image: AssetImage("assets/girl.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
+      padding: const EdgeInsets.all(15),
+      alignment: Alignment.bottomLeft,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (sub.isNotEmpty)
+            Text(
+              sub,
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          small
+              ? Container(
+                  padding: const EdgeInsets.all(5),
+                  color: Colors.white,
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              : Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+        ],
+      ),
+    );
+  }
+
+  Widget _pillButton(String text, Color bg, Color txt) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(color: txt, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _rectButton(
+    String text,
+    Color bg,
+    Color txt, {
+    bool border = false,
+    bool fullWidth = false,
+  }) {
+    return Container(
+      width: fullWidth ? double.infinity : null,
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(8),
+        border: border
+            ? Border.all(
+                color: bg == Colors.transparent
+                    ? ColorStyle.textPrimary
+                    : Colors.transparent,
+              )
+            : null,
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        text,
+        style: TextStyle(color: txt, fontWeight: FontWeight.bold, fontSize: 11),
+      ),
+    );
+  }
+
+  Widget _buildProductList(Size size) {
     return SizedBox(
-      height: size.height * 0.28,
+      height: 280,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.only(left: 15),
-        itemCount: 3,
-        itemBuilder: (_, i) => Container(
-          width: size.width * 0.4,
-          margin: const EdgeInsets.only(right: 12),
+        itemCount: 4,
+        itemBuilder: (context, i) => Container(
+          width: 180,
+          margin: const EdgeInsets.only(right: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -272,113 +742,32 @@ class Homescreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
                 child: Image.asset(
                   "assets/girl.png",
-                  height: size.height * 0.18,
+                  height: 200,
                   fit: BoxFit.cover,
                 ),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 8),
+              const Text(
+                "ROADSTER",
+                style: TextStyle(
+                  fontSize: 10,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const Text(
                 "Pure Linen Shirt",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              const Text("₹1,299"),
+              const Text(
+                "₹1,299",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  color: ColorStyle.primary,
+                ),
+              ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBigCards(Size size, double hp) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: hp),
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.asset("assets/girl.png"),
-          ),
-          const SizedBox(height: 10),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.asset("assets/girl.png"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNewsletter(Size size, double hp) {
-    return Container(
-      margin: EdgeInsets.all(hp),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF8E6EC),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        children: [
-          const Text(
-            "JOIN THE QUICK FASHION NOW !!!",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 10),
-          TextField(
-            decoration: InputDecoration(
-              hintText: "Your email",
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
-            onPressed: () {},
-            child: const Text("SIGN IN"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _sectionTitle(String text, double hp, {bool action = false}) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(hp, 20, hp, 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            text,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          if (action)
-            const Text(
-              "SHOP NOW",
-              style: TextStyle(color: AppColors.primary, fontSize: 12),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _btn(String text, bool filled) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-      decoration: BoxDecoration(
-        color: filled ? AppColors.primary : Colors.transparent,
-        borderRadius: BorderRadius.circular(6),
-        border: filled ? null : Border.all(color: AppColors.primary),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: filled ? Colors.white : AppColors.primary,
-          fontSize: 12,
         ),
       ),
     );

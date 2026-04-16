@@ -1,5 +1,6 @@
 import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/bottomnave/navbaritems.dart';
+import 'package:ecomerce/intro/ageselect.dart';
 import 'package:ecomerce/intro/longaugescreen.dart';
 import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:ecomerce/provider/genderprovider.dart';
@@ -23,13 +24,16 @@ class SelectGender extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        elevation: 0,
+        elevation: 4.0,
+
+        shadowColor: AppColors.black.withOpacity(0.3),
+        // elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.close, color: AppColors.textPrimary),
         ),
         title: Text(
-          l10n.genderStep, // Localized "QUICK FASHION"
+          l10n.genderStep,
           style: const TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.bold,
@@ -46,7 +50,7 @@ class SelectGender extends StatelessWidget {
               );
             },
             child: Text(
-              l10n.btnSkip, // Localized "SKIP"
+              l10n.btnSkip,
               style: const TextStyle(
                 color: AppColors.primary,
                 fontWeight: FontWeight.bold,
@@ -253,7 +257,8 @@ class SelectGender extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      const LanguageSelectionScreen(),
+                                      const AgeSelectionScreen(),
+                                  //LanguageSelectionScreen(),
                                 ),
                               );
                             }

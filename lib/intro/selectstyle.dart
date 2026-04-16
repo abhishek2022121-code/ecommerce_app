@@ -2,6 +2,7 @@ import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/bottomnave/navbaritems.dart';
 import 'package:ecomerce/intro/ageselect.dart';
 import 'package:ecomerce/l10n/app_localizations.dart';
+import 'package:ecomerce/loginmathod/signupscreen.dart';
 import 'package:ecomerce/provider/selectstyleprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +35,11 @@ class SelectStyleScreen extends StatelessWidget {
       backgroundColor: AppColors.scaffoldBg,
       appBar: AppBar(
         backgroundColor: AppColors.scaffoldBg,
-        elevation: 0,
+        elevation: 4.0,
+
+        shadowColor: AppColors.black.withOpacity(0.3),
+
+        //elevation: 0,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -184,7 +189,8 @@ class SelectStyleScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const AgeSelectionScreen(),
+                      builder: (_) => const SignupMethodScreen(),
+                      //AgeSelectionScreen(),
                     ),
                   );
                 },

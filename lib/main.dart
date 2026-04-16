@@ -1,7 +1,7 @@
 import 'package:ecomerce/bottomnave/categoriesscreen.dart';
 import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:ecomerce/provider/ageselectprovider.dart';
-import 'package:ecomerce/provider/categorryprovider.dart';
+import 'package:ecomerce/provider/wishlistprovider.dart';
 
 import 'package:ecomerce/provider/genderprovider.dart';
 import 'package:ecomerce/provider/loginprovider.dart';
@@ -29,14 +29,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => SignProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),
-        ChangeNotifierProvider(create: (_) => Categoriprovider()),
+        ChangeNotifierProvider(create: (_) => Wishlistprovider()),
       ],
-      // Consumer ka use karein taaki LanguageProvider ke change hone par MaterialApp rebuild ho
+
       child: Consumer<LanguageProvider>(
         builder: (context, langProvider, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            // Ab ye sahi se update hoga
+
             locale: langProvider.locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,

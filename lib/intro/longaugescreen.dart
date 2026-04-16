@@ -1,5 +1,6 @@
 import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/bottomnave/navbaritems.dart';
+import 'package:ecomerce/intro/gender.dart';
 import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:ecomerce/loginmathod/signupscreen.dart';
 import 'package:ecomerce/provider/longuageprovider.dart';
@@ -20,7 +21,10 @@ class LanguageSelectionScreen extends StatelessWidget {
       backgroundColor: AppColors.scaffoldBg,
       appBar: AppBar(
         backgroundColor: AppColors.scaffoldBg,
-        elevation: 0,
+        elevation: 4.0,
+
+        shadowColor: AppColors.black.withOpacity(0.3),
+        // elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.close, color: AppColors.textPrimary),
@@ -103,22 +107,26 @@ class LanguageSelectionScreen extends StatelessWidget {
 
                   // Row 1 (English & Hindi)
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _LanguageCard(
-                        title: l10n.langEnglishTitle,
-                        subTitle: l10n.langEnglishSub,
-                        langCode: "EN",
-                        isSelected: langProvider.locale.languageCode == 'en',
-                        onTap: () => langProvider.setLanguage("en"),
+                      Expanded(
+                        child: _LanguageCard(
+                          title: l10n.langEnglishTitle,
+                          subTitle: l10n.langEnglishSub,
+                          langCode: "EN",
+                          isSelected: langProvider.locale.languageCode == 'en',
+                          onTap: () => langProvider.setLanguage("en"),
+                        ),
                       ),
                       // const SizedBox(width: 56),
-                      _LanguageCard(
-                        title: l10n.langHindiTitle,
-                        subTitle: l10n.langHindiSub,
-                        langCode: "HI",
-                        isSelected: langProvider.locale.languageCode == 'hi',
-                        onTap: () => langProvider.setLanguage("hi"),
+                      Expanded(
+                        child: _LanguageCard(
+                          title: l10n.langHindiTitle,
+                          subTitle: l10n.langHindiSub,
+                          langCode: "HI",
+                          isSelected: langProvider.locale.languageCode == 'hi',
+                          onTap: () => langProvider.setLanguage("hi"),
+                        ),
                       ),
                     ],
                   ),
@@ -126,22 +134,26 @@ class LanguageSelectionScreen extends StatelessWidget {
 
                   // Row 2 (Punjabi & Gujarati)
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _LanguageCard(
-                        title: "ਪੰਜਾਬੀ",
-                        subTitle: "PUNJABI",
-                        langCode: "PA",
-                        isSelected: langProvider.locale.languageCode == 'pa',
-                        onTap: () => langProvider.setLanguage("pa"),
+                      Expanded(
+                        child: _LanguageCard(
+                          title: "ਪੰਜਾਬੀ",
+                          subTitle: "PUNJABI",
+                          langCode: "PA",
+                          isSelected: langProvider.locale.languageCode == 'pa',
+                          onTap: () => langProvider.setLanguage("pa"),
+                        ),
                       ),
                       // const SizedBox(width: 56),
-                      _LanguageCard(
-                        title: "ગુજરાતી",
-                        subTitle: "GUJARATI",
-                        langCode: "GU",
-                        isSelected: langProvider.locale.languageCode == 'gu',
-                        onTap: () => langProvider.setLanguage("gu"),
+                      Expanded(
+                        child: _LanguageCard(
+                          title: "ગુજરાતી",
+                          subTitle: "GUJARATI",
+                          langCode: "GU",
+                          isSelected: langProvider.locale.languageCode == 'gu',
+                          onTap: () => langProvider.setLanguage("gu"),
+                        ),
                       ),
                     ],
                   ),
@@ -149,22 +161,26 @@ class LanguageSelectionScreen extends StatelessWidget {
 
                   // Row 3 (Marathi & Tamil)
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _LanguageCard(
-                        title: "मराठी",
-                        subTitle: "MARATHI",
-                        langCode: "MR",
-                        isSelected: langProvider.locale.languageCode == 'mr',
-                        onTap: () => langProvider.setLanguage("mr"),
+                      Expanded(
+                        child: _LanguageCard(
+                          title: "मराठी",
+                          subTitle: "MARATHI",
+                          langCode: "MR",
+                          isSelected: langProvider.locale.languageCode == 'mr',
+                          onTap: () => langProvider.setLanguage("mr"),
+                        ),
                       ),
                       //const SizedBox(width: 56),
-                      _LanguageCard(
-                        title: "தமிழ்",
-                        subTitle: "TAMIL",
-                        langCode: "TA",
-                        isSelected: langProvider.locale.languageCode == 'ta',
-                        onTap: () => langProvider.setLanguage("ta"),
+                      Expanded(
+                        child: _LanguageCard(
+                          title: "தமிழ்",
+                          subTitle: "TAMIL",
+                          langCode: "TA",
+                          isSelected: langProvider.locale.languageCode == 'ta',
+                          onTap: () => langProvider.setLanguage("ta"),
+                        ),
                       ),
                     ],
                   ),
@@ -212,7 +228,8 @@ class LanguageSelectionScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const SignupMethodScreen(),
+                              builder: (context) => const SelectGender(),
+                              //SignupMethodScreen(),
                             ),
                           );
                         },
@@ -296,34 +313,46 @@ class _LanguageCard extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Row(
+            //mainAxisAlignment:MainAxisAlignment.center,
             children: [
-              Text(
-                langCode,
-                style: TextStyle(
-                  color: isSelected ? AppColors.primary : AppColors.textLight,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    langCode,
+                    style: TextStyle(
+                      color: isSelected
+                          ? AppColors.primary
+                          : AppColors.textLight,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    subTitle,
+                    style: const TextStyle(
+                      color: AppColors.textLight,
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-              Text(
-                title,
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                subTitle,
-                style: const TextStyle(
-                  color: AppColors.textLight,
-                  fontSize: 8,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              // Icon(
+              //   Icons.check_circle,
+              //   size: 20,
+              //   color: isSelected ? AppColors.primary : Colors.transparent,
+              // ),
             ],
           ),
         ),
