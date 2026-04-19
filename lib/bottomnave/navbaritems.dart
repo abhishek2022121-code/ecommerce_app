@@ -20,7 +20,7 @@ class _NavbaritemsState extends State<Navbaritems> {
   final List<Widget> _pages = [
     const Homescreen(),
     const Categories(),
-    const Trandingscreen(),
+    const TrendingScreen(),
     const Wishlistscreen(),
     const Profilescreen(),
   ];

@@ -1,6 +1,11 @@
 import 'package:ecomerce/bottomnave/categoriesscreen.dart';
 import 'package:ecomerce/l10n/app_localizations.dart';
+import 'package:ecomerce/provider/addtobagprovider.dart';
 import 'package:ecomerce/provider/ageselectprovider.dart';
+import 'package:ecomerce/provider/checkoutorderplacedsuccsefullyprovider.dart';
+import 'package:ecomerce/provider/checkoutordersummeryprovider.dart';
+import 'package:ecomerce/provider/checkoutscreenprovider.dart';
+import 'package:ecomerce/provider/productdetaileprovider.dart';
 import 'package:ecomerce/provider/wishlistprovider.dart';
 
 import 'package:ecomerce/provider/genderprovider.dart';
@@ -29,7 +34,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => SignProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),
-        ChangeNotifierProvider(create: (_) => Wishlistprovider()),
+        ChangeNotifierProvider(create: (_) => WishlistProvider()),
+        ChangeNotifierProvider(create: (_) => ProductDetailsProvider()),
+        ChangeNotifierProvider(create: (_) => AddtobagProvider()),
+        ChangeNotifierProvider(create: (_) => CheckoutScreenProvider()),
+        ChangeNotifierProvider(create: (_) => Checkoutordersummeryprovider()),
+        ChangeNotifierProvider(
+          create: (_) => Checkoutorderplacedsuccessfulyprovider(),
+        ),
       ],
 
       child: Consumer<LanguageProvider>(

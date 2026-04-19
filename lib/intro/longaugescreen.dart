@@ -348,10 +348,14 @@ class _LanguageCard extends StatelessWidget {
                   ),
                 ],
               ),
-              // Icon(
-              //   Icons.check_circle,
-              //   size: 20,
-              //   color: isSelected ? AppColors.primary : Colors.transparent,
+              // Positioned(
+              //   top: 10,
+              //   right: 10,
+              //   child: Icon(
+              //     Icons.check_circle,
+              //     size: 20,
+              //     color: isSelected ? AppColors.primary : Colors.transparent,
+              //   ),
               // ),
             ],
           ),

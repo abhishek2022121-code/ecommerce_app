@@ -1,5 +1,8 @@
 import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/datilepage/detailescren.dart';
+import 'package:ecomerce/provider/wishlistprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WomenScreen extends StatelessWidget {
   const WomenScreen({super.key});
@@ -370,69 +373,103 @@ class WomenScreen extends StatelessWidget {
 
   Widget _productList(double width) {
     return SizedBox(
-      height: width * 0.75,
+      height: width * 0.78,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 6,
         itemBuilder: (context, index) {
-          return Container(
-            width: width * 0.45,
-            margin: EdgeInsets.only(right: width * 0.04),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Image + Wishlist Icon
-                Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        'assets/girl.png',
-                        height: width * 0.55,
-                        width: width * 0.45,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Positioned(
-                      top: 10,
-                      right: 10,
-                      child: CircleAvatar(
-                        radius: 14,
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.favorite_border,
-                          size: 18,
-                          color: Colors.pink,
+          final product = Product(
+            id: "trending_list_$index",
+            name: "Linen Blend Blazer",
+            price: "245",
+            brand: "VOGUE",
+            image: 'assets/girl.png',
+          );
+
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProductDetailScreen()),
+              );
+            },
+            child: Container(
+              width: width * 0.45,
+              margin: EdgeInsets.only(
+                right: width * 0.04,
+                left: index == 0 ? 15 : 0,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Image + Wishlist Icon
+                  Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          product.image,
+                          height: width * 0.55,
+                          width: width * 0.45,
+                          fit: BoxFit.cover,
                         ),
                       ),
+                      // 2. Wishlist Logic yahan add kiya
+                      Positioned(
+                        top: 10,
+                        right: 10,
+                        child: Consumer<WishlistProvider>(
+                          builder: (context, provider, child) {
+                            bool isFav = provider.isFavorite(product.id);
+                            return GestureDetector(
+                              onTap: () {
+                                provider.toggleWishlist(product);
+                              },
+                              child: CircleAvatar(
+                                radius: 14,
+                                backgroundColor: Colors.white.withOpacity(0.9),
+                                child: Icon(
+                                  isFav
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  size: 18,
+                                  color: isFav
+                                      ? AppColors.primary
+                                      : Colors.black,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: width * 0.02),
+
+                  Text(
+                    product.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: width * 0.035,
+                      color: ColorStyle.textPrimary, // Aapka color class
                     ),
-                  ],
-                ),
-
-                SizedBox(height: width * 0.02),
-
-                Text(
-                  "Linen Blend Blazer",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: width * 0.035,
-                    color: AppColors.textPrimary,
                   ),
-                ),
 
-                const SizedBox(height: 4),
+                  const SizedBox(height: 4),
 
-                Text(
-                  "\$245",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: width * 0.038,
-                    color: AppColors.primary,
+                  Text(
+                    "\$${product.price}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: width * 0.038,
+                      color: AppColors.primary, // Aapka primary color
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

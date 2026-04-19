@@ -1,85 +1,39 @@
 import 'package:flutter/material.dart';
 
+// Your Product Model
 class Product {
-  final String brand;
+  final String id;
   final String name;
-  final double price;
-  final double? oldPrice;
-  final String discount;
-  final double rating;
-  final int reviews;
-  final bool isNew;
-  bool isFavorite; // Logic state for heart icon
+  final String price;
+  final String image;
+  final String brand;
 
   Product({
-    required this.brand,
+    required this.id,
     required this.name,
     required this.price,
-    this.oldPrice,
-    this.discount = "",
-    required this.rating,
-    required this.reviews,
-    this.isNew = false,
-    this.isFavorite = false,
+    required this.image,
+    required this.brand,
   });
 }
 
-class Wishlistprovider extends ChangeNotifier {
-  final List<Product> _products = [
-    Product(
-      brand: "AURELIA STUDIO",
-      name: "Sunset Silk Maxi Dress",
-      price: 180.00,
-      oldPrice: 225.00,
-      discount: "-20%",
-      rating: 4.8,
-      reviews: 124,
-    ),
-    Product(
-      brand: "NOIR COLLECTIVE",
-      name: "Structured Linen Blazer",
-      price: 310.00,
-      rating: 4.9,
-      reviews: 82,
-    ),
-    Product(
-      brand: "BLOOM & WILD",
-      name: "Floral Midi Skirt",
-      price: 145.00,
-      rating: 4.6,
-      reviews: 210,
-    ),
-    Product(
-      brand: "ESSENTIALIST",
-      name: "Pima Cotton Tee",
-      price: 65.00,
-      isNew: true,
-      rating: 5.0,
-      reviews: 45,
-    ),
-    Product(
-      brand: "MAISON VERT",
-      name: "Heritage Leather Jacket",
-      price: 890.00,
-      rating: 4.7,
-      reviews: 18,
-    ),
-    Product(
-      brand: "LUNA CRAFT",
-      name: "Micro Satchel Bag",
-      price: 420.00,
-      oldPrice: 495.00,
-      discount: "-15%",
-      rating: 4.9,
-      reviews: 156,
-    ),
-  ];
+class WishlistProvider extends ChangeNotifier {
+  // Start with an empty list so the screen shows "Empty" initially
+  final List<Product> _wishlistItems = [];
 
-  List<Product> get products => _products;
+  List<Product> get wishlistItems => _wishlistItems;
 
-  // Toggle favorite logic
-  void toggleFavorite(int index) {
-    _products[index].isFavorite = !_products[index].isFavorite;
-    notifyListeners(); // Refresh UI
+  void toggleWishlist(Product product) {
+    final isExist = _wishlistItems.any((item) => item.id == product.id);
+    if (isExist) {
+      _wishlistItems.removeWhere((item) => item.id == product.id);
+    } else {
+      _wishlistItems.add(product);
+    }
+    notifyListeners(); // This triggers the UI rebuild
+  }
+
+  bool isFavorite(String productId) {
+    return _wishlistItems.any((item) => item.id == productId);
   }
 }

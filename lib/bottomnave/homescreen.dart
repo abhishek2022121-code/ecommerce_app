@@ -1,10 +1,20 @@
+import 'package:ecomerce/datilepage/detailescren.dart';
 import 'package:ecomerce/productlisting/womenscreen.dart';
+import 'package:ecomerce/provider/wishlistprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:provider/provider.dart';
 
-class Homescreen extends StatelessWidget {
+class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
 
+  @override
+  State<Homescreen> createState() => _HomescreenState();
+}
+
+class _HomescreenState extends State<Homescreen> {
+  bool isSearching = false;
+  TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -13,29 +23,62 @@ class Homescreen extends StatelessWidget {
       backgroundColor: const Color(0xFFFDF7F8),
 
       appBar: AppBar(
-        backgroundColor: ColorStyle.scaffoldBg,
+        backgroundColor: const Color(0xFFFDF7F8), // scaffoldBg
         elevation: 4.0,
-
-        shadowColor: AppColors.black.withOpacity(0.3),
-
+        shadowColor: Colors.black.withOpacity(0.3),
         centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/applogo.png'),
-        ),
-        title: const Text(
-          "QUICK FASHION",
-          style: TextStyle(
-            color: ColorStyle.textPrimary,
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-          ),
-        ),
-        actions: const [
-          Icon(Icons.search, color: ColorStyle.primary),
-          SizedBox(width: 15),
-          Icon(Icons.shopping_bag_outlined, color: ColorStyle.primary),
-          SizedBox(width: 15),
+
+        // 2. Leading Icon: Agar search ho raha hai toh 'Cross', warna 'Logo'
+        leading: isSearching
+            ? IconButton(
+                icon: const Icon(Icons.close, color: Color(0xFFC34A5E)),
+                onPressed: () {
+                  setState(() {
+                    isSearching = false;
+                    _searchController.clear();
+                  });
+                },
+              )
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset('assets/applogo.png'),
+              ),
+
+        // 3. Title: Agar search ho raha hai toh 'TextField', warna 'Text Title'
+        title: isSearching
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                style: const TextStyle(color: Color(0xFF4A3239)),
+                decoration: const InputDecoration(
+                  hintText: "Search items...",
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
+              )
+            : const Text(
+                "QUICK FASHION",
+                style: TextStyle(
+                  color: Color(0xFF4A3239), // textPrimary
+                  fontWeight: FontWeight.w900,
+                  fontSize: 18,
+                ),
+              ),
+
+        // 4. Actions: Search mode mein icons hide ya change kar sakte hain
+        actions: [
+          if (!isSearching)
+            IconButton(
+              icon: const Icon(Icons.search, color: Color(0xFFC34A5E)),
+              onPressed: () {
+                setState(() {
+                  isSearching = true;
+                });
+              },
+            ),
+          const SizedBox(width: 5),
+          const Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
+          const SizedBox(width: 15),
         ],
       ),
       body: SingleChildScrollView(
@@ -84,7 +127,6 @@ class Homescreen extends StatelessWidget {
   }
 
   // --- UI COMPONENTS ---
-
   Widget _buildSectionHeader(String title, double hp, {String? action}) {
     return Padding(
       padding: EdgeInsets.fromLTRB(hp, 15, hp, 15),
@@ -727,48 +769,114 @@ class Homescreen extends StatelessWidget {
 
   Widget _buildProductList(Size size) {
     return SizedBox(
-      height: 280,
+      height: 300, // Thoda height badha diya taaki text cut na ho
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.only(left: 15),
         itemCount: 4,
-        itemBuilder: (context, i) => Container(
-          width: 180,
-          margin: const EdgeInsets.only(right: 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.asset(
-                  "assets/girl.png",
-                  height: 200,
-                  fit: BoxFit.cover,
-                ),
+        itemBuilder: (context, i) {
+          final product = Product(
+            id: "product_$i", // Har item ki unique ID honi chahiye
+            name: "Pure Linen Shirt",
+            price: "1,299",
+            brand: "ROADSTER",
+            image: "assets/girl.png",
+          );
+
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProductDetailScreen()),
+              );
+            },
+            child: Container(
+              width: 180,
+              margin: const EdgeInsets.only(right: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.asset(
+                          product.image,
+                          height: 200,
+                          width: 180,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      // 2. Favorite Icon Logic with Consumer
+                      Positioned(
+                        right: 5,
+                        top: 5,
+                        child: Consumer<WishlistProvider>(
+                          builder: (context, provider, child) {
+                            bool isFav = provider.isFavorite(product.id);
+                            return GestureDetector(
+                              onTap: () {
+                                provider.toggleWishlist(product);
+                                // Optional: Chhota sa feedback
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      isFav
+                                          ? "Removed from Wishlist"
+                                          : "Added to Wishlist",
+                                    ),
+                                    duration: const Duration(milliseconds: 500),
+                                    backgroundColor: AppColors.primary,
+                                  ),
+                                );
+                              },
+                              child: CircleAvatar(
+                                radius: 18,
+                                backgroundColor: Colors.white.withOpacity(0.8),
+                                child: Icon(
+                                  isFav
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: isFav
+                                      ? AppColors.error
+                                      : AppColors.black,
+                                  size: 20,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    product.brand,
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: ColorStyle.textLight,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    product.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: ColorStyle.textPrimary,
+                    ),
+                  ),
+                  Text(
+                    "₹${product.price}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              const Text(
-                "ROADSTER",
-                style: TextStyle(
-                  fontSize: 10,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Text(
-                "Pure Linen Shirt",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const Text(
-                "₹1,299",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  color: ColorStyle.primary,
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
