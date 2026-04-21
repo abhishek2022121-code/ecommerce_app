@@ -270,10 +270,10 @@ class Checkoutordersummeryscreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _summaryRow("Bag Total", "\$${provider.bagTotal.toStringAsFixed(2)}"),
+          _summaryRow("Bag Total", "₹${provider.bagTotal.toStringAsFixed(2)}"),
           _summaryRow(
             "Bag Discount",
-            "-\$${provider.bagDiscount.toStringAsFixed(2)}",
+            "-₹${provider.bagDiscount.toStringAsFixed(2)}",
             isRed: true,
           ),
           const SizedBox(height: 10),
@@ -306,7 +306,7 @@ class Checkoutordersummeryscreen extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  "-\$${provider.couponDiscount.toStringAsFixed(2)}",
+                  "-₹${provider.couponDiscount.toStringAsFixed(2)}",
                   style: const TextStyle(
                     color: Color(0xFFC34A5E),
                     fontWeight: FontWeight.w900,
@@ -317,15 +317,12 @@ class Checkoutordersummeryscreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 18),
-          _summaryRow(
-            "GST (18%)",
-            "\$${provider.gstAmount.toStringAsFixed(2)}",
-          ),
+          _summaryRow("GST (18%)", "₹${provider.gstAmount.toStringAsFixed(2)}"),
           _summaryRow(
             "Delivery Charges",
             "FREE",
             isGreen: true,
-            oldPrice: "\$25.00",
+            oldPrice: "₹25.00",
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
@@ -357,7 +354,7 @@ class Checkoutordersummeryscreen extends StatelessWidget {
                 ],
               ),
               Text(
-                "\$${provider.totalAmount.toStringAsFixed(2)}",
+                "₹${provider.totalAmount.toStringAsFixed(2)}",
                 style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w900,

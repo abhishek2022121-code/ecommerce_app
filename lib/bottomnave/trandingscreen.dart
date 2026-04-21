@@ -1,9 +1,9 @@
+import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/datilepage/detailescren.dart';
 import 'package:ecomerce/provider/wishlistprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// Import your color classes here
 
 class TrendingScreen extends StatelessWidget {
   const TrendingScreen({super.key});
@@ -32,10 +32,18 @@ class TrendingScreen extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        actions: const [
-          Icon(Icons.search, color: ColorStyle.primary),
+        actions: [
+          Icon(Icons.search, color: Color(0xFFC34A5E)),
           SizedBox(width: 15),
-          Icon(Icons.shopping_bag_outlined, color: ColorStyle.primary),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              );
+            },
+            icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
+          ),
           SizedBox(width: 15),
         ],
       ),
@@ -74,8 +82,6 @@ class TrendingScreen extends StatelessWidget {
             ),
 
             const SizedBox(height: 20),
-
-            // Top Horizontal Section (Cloud Knit Set & Prism Shades)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
@@ -94,7 +100,7 @@ class TrendingScreen extends StatelessWidget {
                         context,
                         "1",
                         "Cloud Knit Set",
-                        "\$250",
+                        "₹250",
                         "TREND: SOFT MINIMAL",
                       ),
                     ),
@@ -114,7 +120,7 @@ class TrendingScreen extends StatelessWidget {
                         context,
                         "2",
                         "Prism Shades",
-                        "\$180",
+                        "₹180",
                         "VIBE: STUDIO GAZE",
                       ),
                     ),
@@ -204,7 +210,7 @@ class TrendingScreen extends StatelessWidget {
                     context,
                     "id_$index",
                     "Product $index",
-                    "\$${(index + 1) * 100}",
+                    "₹${(index + 1) * 100}",
                     "BRAND NAME",
                   ),
                 );

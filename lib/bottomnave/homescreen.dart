@@ -1,4 +1,6 @@
+import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/datilepage/detailescren.dart';
+import 'package:ecomerce/productlisting/iteamcollections.dart';
 import 'package:ecomerce/productlisting/womenscreen.dart';
 import 'package:ecomerce/provider/wishlistprovider.dart';
 import 'package:flutter/material.dart';
@@ -7,14 +9,13 @@ import 'package:provider/provider.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
-
   @override
   State<Homescreen> createState() => _HomescreenState();
 }
 
 class _HomescreenState extends State<Homescreen> {
   bool isSearching = false;
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -23,12 +24,11 @@ class _HomescreenState extends State<Homescreen> {
       backgroundColor: const Color(0xFFFDF7F8),
 
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFDF7F8), // scaffoldBg
+        backgroundColor: const Color(0xFFFDF7F8),
         elevation: 4.0,
         shadowColor: Colors.black.withOpacity(0.3),
         centerTitle: true,
 
-        // 2. Leading Icon: Agar search ho raha hai toh 'Cross', warna 'Logo'
         leading: isSearching
             ? IconButton(
                 icon: const Icon(Icons.close, color: Color(0xFFC34A5E)),
@@ -43,8 +43,6 @@ class _HomescreenState extends State<Homescreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Image.asset('assets/applogo.png'),
               ),
-
-        // 3. Title: Agar search ho raha hai toh 'TextField', warna 'Text Title'
         title: isSearching
             ? TextField(
                 controller: _searchController,
@@ -59,13 +57,12 @@ class _HomescreenState extends State<Homescreen> {
             : const Text(
                 "QUICK FASHION",
                 style: TextStyle(
-                  color: Color(0xFF4A3239), // textPrimary
+                  color: Color(0xFF4A3239),
                   fontWeight: FontWeight.w900,
                   fontSize: 18,
                 ),
               ),
 
-        // 4. Actions: Search mode mein icons hide ya change kar sakte hain
         actions: [
           if (!isSearching)
             IconButton(
@@ -77,7 +74,15 @@ class _HomescreenState extends State<Homescreen> {
               },
             ),
           const SizedBox(width: 5),
-          const Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              );
+            },
+            icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
+          ),
           const SizedBox(width: 15),
         ],
       ),
@@ -142,12 +147,20 @@ class _HomescreenState extends State<Homescreen> {
             ),
           ),
           if (action != null)
-            Text(
-              action,
-              style: const TextStyle(
-                color: ColorStyle.primary,
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Iteamcollections()),
+                );
+              },
+              child: Text(
+                action,
+                style: const TextStyle(
+                  color: ColorStyle.primary,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
         ],
@@ -300,27 +313,56 @@ class _HomescreenState extends State<Homescreen> {
       padding: EdgeInsets.symmetric(horizontal: hp),
       child: Column(
         children: [
-          _brandCard(size, "H&M ESSENTIALS", "URBAN LEGEND", height: 280),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              );
+            },
+            child: _brandCard(
+              size,
+              "H&M ESSENTIALS",
+              "URBAN LEGEND",
+              height: 280,
+            ),
+          ),
           const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
-                child: _brandCard(
-                  size,
-                  "NIKE AIR",
-                  "",
-                  height: 180,
-                  small: true,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                    );
+                  },
+                  child: _brandCard(
+                    size,
+                    "NIKE AIR",
+                    "",
+                    height: 180,
+                    small: true,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _brandCard(
-                  size,
-                  "ADIDAS ORIG",
-                  "",
-                  height: 180,
-                  small: true,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                    );
+                  },
+                  child: _brandCard(
+                    size,
+                    "ADIDAS ORIG",
+                    "",
+                    height: 180,
+                    small: true,
+                  ),
                 ),
               ),
             ],
@@ -329,22 +371,38 @@ class _HomescreenState extends State<Homescreen> {
           Row(
             children: [
               Expanded(
-                child: _brandCard(
-                  size,
-                  "ZARA MAN",
-                  "",
-                  height: 180,
-                  small: true,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                    );
+                  },
+                  child: _brandCard(
+                    size,
+                    "ZARA MAN",
+                    "",
+                    height: 180,
+                    small: true,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _brandCard(
-                  size,
-                  "FOREVER 21",
-                  "",
-                  height: 180,
-                  small: true,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                    );
+                  },
+                  child: _brandCard(
+                    size,
+                    "FOREVER 21",
+                    "",
+                    height: 180,
+                    small: true,
+                  ),
                 ),
               ),
             ],
@@ -457,13 +515,21 @@ class _HomescreenState extends State<Homescreen> {
           // Image with specific border radius from screenshot
           Padding(
             padding: EdgeInsets.symmetric(horizontal: hp * 0.5),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(25),
-              child: Image.asset(
-                "assets/girl.png", // Replace with your image
-                height: 400,
-                width: double.infinity,
-                fit: BoxFit.cover,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                );
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(25),
+                child: Image.asset(
+                  "assets/girl.png", // Replace with your image
+                  height: 400,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -485,39 +551,47 @@ class _HomescreenState extends State<Homescreen> {
             borderRadius: BorderRadius.circular(
               30,
             ), // Extra rounded as per image
-            child: Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                Image.asset(
-                  "assets/girl.png",
-                  height:
-                      420, // Height image ke proportion ke hisaab se set ki hai
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-                // Floating Action Button (+ Icon)
-                // Padding(
-                //   padding: const EdgeInsets.all(12.0),
-                //   child: Container(
-                //     height: 50,
-                //     width: 50,
-                //     decoration: const BoxDecoration(
-                //       color: Color(
-                //         0xFFA6264C,
-                //       ), // Screenshot ka exact maroonish-pink color
-                //       shape: BoxShape.circle,
-                //       boxShadow: [
-                //         BoxShadow(
-                //           color: Colors.black26,
-                //           blurRadius: 10,
-                //           offset: Offset(0, 4),
-                //         ),
-                //       ],
-                //     ),
-                //     child: const Icon(Icons.add, color: Colors.white, size: 28),
-                //   ),
-                // ),
-              ],
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                );
+              },
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  Image.asset(
+                    "assets/girl.png",
+                    height:
+                        420, // Height image ke proportion ke hisaab se set ki hai
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                  // Floating Action Button (+ Icon)
+                  // Padding(
+                  //   padding: const EdgeInsets.all(12.0),
+                  //   child: Container(
+                  //     height: 50,
+                  //     width: 50,
+                  //     decoration: const BoxDecoration(
+                  //       color: Color(
+                  //         0xFFA6264C,
+                  //       ), // Screenshot ka exact maroonish-pink color
+                  //       shape: BoxShape.circle,
+                  //       boxShadow: [
+                  //         BoxShadow(
+                  //           color: Colors.black26,
+                  //           blurRadius: 10,
+                  //           offset: Offset(0, 4),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //     child: const Icon(Icons.add, color: Colors.white, size: 28),
+                  //   ),
+                  // ),
+                ],
+              ),
             ),
           ),
 
@@ -675,51 +749,59 @@ class _HomescreenState extends State<Homescreen> {
     required double height,
     bool small = false,
   }) {
-    return Container(
-      height: height,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        image: const DecorationImage(
-          image: AssetImage("assets/girl.png"),
-          fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Addtobagscreen()),
+        );
+      },
+      child: Container(
+        height: height,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          image: const DecorationImage(
+            image: AssetImage("assets/girl.png"),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      padding: const EdgeInsets.all(15),
-      alignment: Alignment.bottomLeft,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (sub.isNotEmpty)
-            Text(
-              sub,
-              style: const TextStyle(
-                color: Colors.white70,
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
+        padding: const EdgeInsets.all(15),
+        alignment: Alignment.bottomLeft,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (sub.isNotEmpty)
+              Text(
+                sub,
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          small
-              ? Container(
-                  padding: const EdgeInsets.all(5),
-                  color: Colors.white,
-                  child: Text(
+            small
+                ? Container(
+                    padding: const EdgeInsets.all(5),
+                    color: Colors.white,
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 8,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                : Text(
                     title,
                     style: const TextStyle(
-                      fontSize: 8,
-                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
-                )
-              : Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }

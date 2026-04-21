@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// Your Product Model
+
 class Product {
   final String id;
   final String name;
@@ -18,7 +18,7 @@ class Product {
 }
 
 class WishlistProvider extends ChangeNotifier {
-  // Start with an empty list so the screen shows "Empty" initially
+
   final List<Product> _wishlistItems = [];
 
   List<Product> get wishlistItems => _wishlistItems;
@@ -30,7 +30,7 @@ class WishlistProvider extends ChangeNotifier {
     } else {
       _wishlistItems.add(product);
     }
-    notifyListeners(); // This triggers the UI rebuild
+    notifyListeners(); 
   }
 
   bool isFavorite(String productId) {

@@ -34,6 +34,23 @@ class LoginScreen extends StatelessWidget {
             letterSpacing: 1,
           ),
         ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const Navbaritems()),
+              );
+            },
+            child: Text(
+              l10n.btnSkip, // Localized
+              style: const TextStyle(
+                color: AppColors.primary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

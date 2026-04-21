@@ -26,7 +26,6 @@ class _SplashscreenState extends State<Splashscreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Screen dimensions for responsiveness
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -35,34 +34,28 @@ class _SplashscreenState extends State<Splashscreen> {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-          // Soft radial or linear gradient as seen in the background
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFF8F9FA),
-              AppColors.white,
-              Color(0xFFFCE4EC), // Very light pink at the bottom
-            ],
+            colors: [Color(0xFFF8F9FA), AppColors.white, Color(0xFFFCE4EC)],
           ),
         ),
         child: Column(
           children: [
-            // Top section for spacing and cart icon
-            SafeArea(
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 25, top: 20),
-                  child: Icon(
-                    Icons.shopping_cart_outlined,
-                    color: AppColors.black.withOpacity(0.7),
-                    size: 28,
-                  ),
-                ),
-              ),
-            ),
-
+            //SafeArea(
+            //child:
+            // Align(
+            //   alignment: Alignment.topRight,
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(right: 25, top: 20),
+            //     child: Icon(
+            //       Icons.shopping_cart_outlined,
+            //       color: AppColors.black.withOpacity(0.7),
+            //       size: 28,
+            //     ),
+            //   ),
+            // ),
+            //),
             const Spacer(flex: 2),
 
             // Central Logo Widget

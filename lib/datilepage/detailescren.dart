@@ -1,14 +1,23 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/productlisting/iteamcollections.dart';
 import 'package:ecomerce/provider/productdetaileprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // import 'package:ecomerce/colorce/appcolors.dart';
 
-class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key});
+class ProductDetailScreen extends StatefulWidget {
+  ProductDetailScreen({super.key});
+
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +46,18 @@ class ProductDetailScreen extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        actions: const [
-          Icon(Icons.search, color: ColorStyle.primary),
+        actions: [
+          Icon(Icons.search, color: Color(0xFFC34A5E)),
           SizedBox(width: 15),
-          Icon(Icons.shopping_bag_outlined, color: ColorStyle.primary),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              );
+            },
+            icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
+          ),
           SizedBox(width: 15),
         ],
       ),
@@ -49,18 +66,58 @@ class ProductDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Main Product Image
-            Container(
-              height: size.width,
-              width: size.width,
-              margin: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                image: const DecorationImage(
-                  image: AssetImage('assets/girl.png'), // Main Bag Image
-                  fit: BoxFit.cover,
-                ),
+            CarouselSlider(
+              items: List.generate(5, (index) {
+                return AnimatedContainer(
+                  duration: Duration(milliseconds: 500),
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: _currentIndex == index ? 10 : 20,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 10,
+                        offset: Offset(0, 5),
+                      ),
+                    ],
+                    image: DecorationImage(
+                      image: AssetImage('assets/girl.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              }),
+              options: CarouselOptions(
+                height: 300,
+                viewportFraction: 0.85,
+                enlargeCenterPage: true,
+                autoPlay: true,
+                autoPlayInterval: Duration(seconds: 3),
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                autoPlayCurve: Curves.easeInOut,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
               ),
             ),
+            SizedBox(height: 30),
+            // Container(
+            //   height: size.width,
+            //   width: size.width,
+            //   margin: const EdgeInsets.all(15),
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(25),
+            //     image: const DecorationImage(
+            //       image: AssetImage('assets/girl.png'), // Main Bag Image
+            //       fit: BoxFit.cover,
+            //     ),
+            //   ),
+            // ),
 
             // Thumbnails
             Row(
@@ -94,7 +151,7 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const Text(
-                    "\$1,250.00",
+                    "₹1,250.00",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -207,7 +264,6 @@ class ProductDetailScreen extends StatelessWidget {
   }
 
   // --- Widget Helpers ---
-
   Widget _buildThumbnail(double width) {
     return Container(
       width: width * 0.28,
@@ -420,11 +476,11 @@ class ProductDetailScreen extends StatelessWidget {
             // TweenAnimationBuilder use kiya hai smooth animation ke liye
             child: TweenAnimationBuilder<double>(
               tween: Tween<double>(begin: 0, end: percent),
-              duration: const Duration(milliseconds: 800), // Animation ki speed
-              curve: Curves.easeInOutQuart, // Animation ka style
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.easeInOutQuart,
               builder: (context, value, child) {
                 return LinearProgressIndicator(
-                  value: value, // Animate hone wali value
+                  value: value,
                   backgroundColor: Colors.pink.shade50,
                   color: const Color(0xFFC34A5E),
                   minHeight: 6,
@@ -529,10 +585,10 @@ class ProductDetailScreen extends StatelessWidget {
 
   Widget _buildCompleteLookGrid(double width) {
     final List<Map<String, String>> lookItems = [
-      {"name": "Silk Mirage Scarf", "price": "\$145.00"},
-      {"name": "Prism Gold Cuff", "price": "\$320.00"},
-      {"name": "Aura Suede Heels", "price": "\$650.00"},
-      {"name": "Atelier Trench", "price": "\$890.00"},
+      {"name": "Silk Mirage Scarf", "price": "₹145.00"},
+      {"name": "Prism Gold Cuff", "price": "₹320.00"},
+      {"name": "Aura Suede Heels", "price": "₹650.00"},
+      {"name": "Atelier Trench", "price": "₹890.00"},
     ];
 
     return GridView.builder(
@@ -546,29 +602,40 @@ class ProductDetailScreen extends StatelessWidget {
         mainAxisSpacing: 15,
       ),
       itemBuilder: (context, index) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.asset('assets/girl.png', fit: BoxFit.cover),
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Iteamcollections()),
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.asset('assets/girl.png', fit: BoxFit.cover),
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              lookItems[index]['name']!,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            Text(
-              lookItems[index]['price']!,
-              style: const TextStyle(
-                color: Color(0xFFC34A5E),
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
+              const SizedBox(height: 8),
+              Text(
+                lookItems[index]['name']!,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
               ),
-            ),
-          ],
+              Text(
+                lookItems[index]['price']!,
+                style: const TextStyle(
+                  color: Color(0xFFC34A5E),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

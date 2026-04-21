@@ -1,5 +1,7 @@
+import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/datilepage/detailescren.dart';
+import 'package:ecomerce/productlisting/iteamcollections.dart';
 import 'package:ecomerce/provider/wishlistprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,10 +35,18 @@ class WomenScreen extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        actions: const [
-          Icon(Icons.search, color: ColorStyle.primary),
+        actions: [
+          Icon(Icons.search, color: Color(0xFFC34A5E)),
           SizedBox(width: 15),
-          Icon(Icons.shopping_bag_outlined, color: ColorStyle.primary),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              );
+            },
+            icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
+          ),
           SizedBox(width: 15),
         ],
       ),
@@ -120,12 +130,12 @@ class WomenScreen extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.symmetric(horizontal: width * 0.04),
                 children: [
-                  _categoryItem("Dresses", width),
-                  _categoryItem("Tops", width),
-                  _categoryItem("Shoes", width),
-                  _categoryItem("Bags", width),
-                  _categoryItem("Tops", width),
-                  _categoryItem("Shoes", width),
+                  _categoryItem(context, 'Dresses', width),
+                  _categoryItem(context, "Tops", width),
+                  _categoryItem(context, "Shoes", width),
+                  _categoryItem(context, "Bags", width),
+                  _categoryItem(context, "Tops", width),
+                  _categoryItem(context, "Shoes", width),
                 ],
               ),
             ),
@@ -256,15 +266,23 @@ class WomenScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 15),
-                Container(
-                  // margin: EdgeInsets.symmetric(horizontal: width * 0.011),
-                  width: 350,
-                  height: height * 0.43,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(26),
-                    image: const DecorationImage(
-                      image: AssetImage('assets/girl.png'),
-                      fit: BoxFit.cover,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                    );
+                  },
+                  child: Container(
+                    // margin: EdgeInsets.symmetric(horizontal: width * 0.011),
+                    width: 350,
+                    height: height * 0.43,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(26),
+                      image: const DecorationImage(
+                        image: AssetImage('assets/girl.png'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -279,13 +297,23 @@ class WomenScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        "assets/girl.png",
-                        height: height * 0.15,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Iteamcollections(),
+                          ),
+                        );
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(
+                          "assets/girl.png",
+                          height: height * 0.15,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
@@ -294,13 +322,23 @@ class WomenScreen extends StatelessWidget {
 
                   Expanded(
                     flex: 2,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        "assets/girl.png",
-                        height: height * 0.15,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Iteamcollections(),
+                          ),
+                        );
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(
+                          "assets/girl.png",
+                          height: height * 0.15,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
@@ -345,30 +383,36 @@ class WomenScreen extends StatelessWidget {
   }
 
   // ================= CATEGORY =================
-
-  Widget _categoryItem(String title, double width) {
+  Widget _categoryItem(BuildContext context, String title, double width) {
     return Padding(
       padding: EdgeInsets.only(right: width * 0.04),
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: width * 0.08,
-            backgroundImage: const AssetImage('assets/girl.png'),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: width * 0.03,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Iteamcollections()),
+          );
+        },
+        child: Column(
+          children: [
+            CircleAvatar(
+              radius: width * 0.08,
+              backgroundImage: const AssetImage('assets/girl.png'),
             ),
-          ),
-        ],
+            const SizedBox(height: 6),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: width * 0.03,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
-
   // ================= PRODUCT LIST =================
 
   Widget _productList(double width) {
@@ -461,7 +505,7 @@ class WomenScreen extends StatelessWidget {
                   const SizedBox(height: 4),
 
                   Text(
-                    "\$${product.price}",
+                    "₹${product.price}",
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: width * 0.038,

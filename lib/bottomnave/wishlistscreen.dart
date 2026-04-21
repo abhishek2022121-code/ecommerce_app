@@ -1,3 +1,4 @@
+import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/datilepage/detailescren.dart';
 import 'package:ecomerce/provider/wishlistprovider.dart';
@@ -41,10 +42,18 @@ class Wishlistscreen extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        actions: const [
-          Icon(Icons.search, color: ColorStyle.primary),
+        actions: [
+          Icon(Icons.search, color: Color(0xFFC34A5E)),
           SizedBox(width: 15),
-          Icon(Icons.shopping_bag_outlined, color: ColorStyle.primary),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              );
+            },
+            icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
+          ),
           SizedBox(width: 15),
         ],
       ),

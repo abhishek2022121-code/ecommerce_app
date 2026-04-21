@@ -17,16 +17,16 @@ class ShipmentItem {
 class Checkoutorderplacedsuccessfulyprovider extends ChangeNotifier {
   String orderId = "#VP-9284-AX";
   String estDelivery = "Oct 24 - 26";
-  String subtotal = "\$1,340.00";
+  String subtotal = "₹1,340.00";
   String shipping = "FREE";
-  String totalPaid = "\$1,340.00";
+  String totalPaid = "₹1,340.00";
 
   final List<ShipmentItem> items = [
     ShipmentItem(
       title: "Artisan Wool Overcoat",
       size: "M",
       color: "Camel",
-      price: "\$450.00",
+      price: "₹450.00",
       image: "assets/girl.png", // Replace with your asset path
       qty: 1,
     ),
@@ -34,7 +34,7 @@ class Checkoutorderplacedsuccessfulyprovider extends ChangeNotifier {
       title: "Crystal Stiletto Pumps",
       size: "38",
       color: "Pearl White",
-      price: "\$890.00",
+      price: "₹890.00",
       image: "assets/girl.png", // Replace with your asset path
       qty: 1,
     ),
