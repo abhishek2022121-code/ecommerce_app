@@ -6,7 +6,9 @@ import 'package:ecomerce/provider/checkoutorderplacedsuccsefullyprovider.dart';
 import 'package:ecomerce/provider/checkoutordersummeryprovider.dart';
 import 'package:ecomerce/provider/checkoutscreenprovider.dart';
 import 'package:ecomerce/provider/iteamcollectionprovider.dart';
+import 'package:ecomerce/provider/myorderprovider.dart';
 import 'package:ecomerce/provider/productdetaileprovider.dart';
+import 'package:ecomerce/provider/profileprovider.dart';
 import 'package:ecomerce/provider/wishlistprovider.dart';
 
 import 'package:ecomerce/provider/genderprovider.dart';
@@ -44,6 +46,8 @@ class MyApp extends StatelessWidget {
           create: (_) => Checkoutorderplacedsuccessfulyprovider(),
         ),
         ChangeNotifierProvider(create: (_) => IteamcollectionProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => MyOrdersProvider()),
       ],
 
       child: Consumer<LanguageProvider>(

@@ -9,7 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Addtobagscreen extends StatelessWidget {
-  const Addtobagscreen({super.key});
+  String image;
+  String name;
+  String price;
+  Addtobagscreen({
+    super.key,
+    required this.image,
+    required this.name,
+    required this.price,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +167,7 @@ class Addtobagscreen extends StatelessWidget {
                           "EDIT",
 
                           style: TextStyle(
-                            color: const Color(0xFFC34A5E),
+                            color: Color(0xFFC34A5E),
 
                             fontWeight: FontWeight.w900,
 
@@ -240,7 +248,6 @@ class Addtobagscreen extends StatelessWidget {
 
       decoration: BoxDecoration(
         color: Colors.white,
-
         borderRadius: BorderRadius.circular(20),
       ),
 
@@ -248,14 +255,10 @@ class Addtobagscreen extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
-
             child: Image.asset(
               item.image,
-
               width: 85,
-
               height: 85,
-
               fit: BoxFit.cover,
             ),
           ),
@@ -265,24 +268,19 @@ class Addtobagscreen extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-
               children: [
                 Text(
                   item.name,
-
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-
                     fontSize: 16,
                   ),
                 ),
 
                 Text(
                   item.category,
-
                   style: const TextStyle(
                     color: ColorStyle.textLight,
-
                     fontSize: 12,
                   ),
                 ),
@@ -292,12 +290,9 @@ class Addtobagscreen extends StatelessWidget {
                 // Dynamic Price
                 Text(
                   "₹${item.totalPrice.toInt()}",
-
                   style: const TextStyle(
                     fontWeight: FontWeight.w900,
-
-                    color: const Color(0xFFC34A5E),
-
+                    color: Color(0xFFC34A5E),
                     fontSize: 18,
                   ),
                 ),
@@ -305,12 +300,11 @@ class Addtobagscreen extends StatelessWidget {
             ),
           ),
 
+          // Quantity Box
           Container(
             height: 35,
-
             decoration: BoxDecoration(
               color: const Color(0xFFFDF2F4),
-
               borderRadius: BorderRadius.circular(20),
             ),
 
@@ -318,34 +312,36 @@ class Addtobagscreen extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () => bag.updateQuantity(index, false),
-
                   icon: const Icon(
                     Icons.remove,
-
                     size: 14,
-
-                    color: const Color(0xFFC34A5E),
+                    color: Color(0xFFC34A5E),
                   ),
                 ),
 
                 Text(
                   "${item.quantity}",
-
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
 
                 IconButton(
                   onPressed: () => bag.updateQuantity(index, true),
-
                   icon: const Icon(
                     Icons.add,
-
                     size: 14,
-
                     color: Color(0xFFC34A5E),
                   ),
                 ),
               ],
+            ),
+          ),
+
+          IconButton(
+            onPressed: () => bag.removeItem(index),
+            icon: const Icon(
+              Icons.delete_outline,
+              color: Colors.redAccent,
+              size: 20,
             ),
           ),
         ],

@@ -22,7 +22,7 @@ class _NavbaritemsState extends State<Navbaritems> {
     const Categories(),
     const TrendingScreen(),
     const Wishlistscreen(),
-    const Profilescreen(),
+    const ProfileScreen(),
   ];
 
   @override

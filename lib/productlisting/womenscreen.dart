@@ -40,10 +40,10 @@ class WomenScreen extends StatelessWidget {
           SizedBox(width: 15),
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Addtobagscreen()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              // );
             },
             icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
           ),
@@ -270,7 +270,9 @@ class WomenScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                      MaterialPageRoute(
+                        builder: (context) => Iteamcollections(),
+                      ),
                     );
                   },
                   child: Container(
@@ -434,7 +436,13 @@ class WomenScreen extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProductDetailScreen()),
+                MaterialPageRoute(
+                  builder: (context) => ProductDetailScreen(
+                    image: 'assets/girl.png',
+                    name: "Linen Blend Blazer",
+                    price: "245",
+                  ),
+                ),
               );
             },
             child: Container(

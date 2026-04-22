@@ -113,7 +113,7 @@ class SelectGender extends StatelessWidget {
                         alignment: Alignment.bottomLeft,
                         children: [
                           Container(
-                            height: size.height * 0.45,
+                            height: size.height * 0.40,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
@@ -173,7 +173,7 @@ class SelectGender extends StatelessWidget {
                         alignment: Alignment.bottomLeft,
                         children: [
                           Container(
-                            height: size.height * 0.45,
+                            height: size.height * 0.40,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),

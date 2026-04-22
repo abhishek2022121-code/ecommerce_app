@@ -78,7 +78,7 @@ class _HomescreenState extends State<Homescreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                MaterialPageRoute(builder: (context) => Iteamcollections()),
               );
             },
             icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
@@ -317,7 +317,7 @@ class _HomescreenState extends State<Homescreen> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                MaterialPageRoute(builder: (context) => Iteamcollections()),
               );
             },
             child: _brandCard(
@@ -335,7 +335,9 @@ class _HomescreenState extends State<Homescreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                      MaterialPageRoute(
+                        builder: (context) => Iteamcollections(),
+                      ),
                     );
                   },
                   child: _brandCard(
@@ -353,7 +355,9 @@ class _HomescreenState extends State<Homescreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                      MaterialPageRoute(
+                        builder: (context) => Iteamcollections(),
+                      ),
                     );
                   },
                   child: _brandCard(
@@ -375,7 +379,9 @@ class _HomescreenState extends State<Homescreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                      MaterialPageRoute(
+                        builder: (context) => Iteamcollections(),
+                      ),
                     );
                   },
                   child: _brandCard(
@@ -393,7 +399,9 @@ class _HomescreenState extends State<Homescreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                      MaterialPageRoute(
+                        builder: (context) => Iteamcollections(),
+                      ),
                     );
                   },
                   child: _brandCard(
@@ -519,7 +527,7 @@ class _HomescreenState extends State<Homescreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                  MaterialPageRoute(builder: (context) => Iteamcollections()),
                 );
               },
               child: ClipRRect(
@@ -555,7 +563,7 @@ class _HomescreenState extends State<Homescreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                  MaterialPageRoute(builder: (context) => Iteamcollections()),
                 );
               },
               child: Stack(
@@ -753,7 +761,7 @@ class _HomescreenState extends State<Homescreen> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Addtobagscreen()),
+          MaterialPageRoute(builder: (context) => Iteamcollections()),
         );
       },
       child: Container(
@@ -869,7 +877,13 @@ class _HomescreenState extends State<Homescreen> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProductDetailScreen()),
+                MaterialPageRoute(
+                  builder: (context) => ProductDetailScreen(
+                    image: "assets/girl.png",
+                    name: 'Pure Linen Shirt',
+                    price: '1,299',
+                  ),
+                ),
               );
             },
             child: Container(

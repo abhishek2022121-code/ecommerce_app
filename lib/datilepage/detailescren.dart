@@ -3,6 +3,7 @@ import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/productlisting/iteamcollections.dart';
+import 'package:ecomerce/provider/addtobagprovider.dart';
 import 'package:ecomerce/provider/productdetaileprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,15 @@ import 'package:provider/provider.dart';
 // import 'package:ecomerce/colorce/appcolors.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  ProductDetailScreen({super.key});
+  String image;
+  String name;
+  String price;
+  ProductDetailScreen({
+    super.key,
+    required this.image,
+    required this.name,
+    required this.price,
+  });
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -36,7 +45,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         centerTitle: true,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/applogo.png'),
+          child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+
+            icon: Icon(Icons.arrow_back_ios, color: Color(0xFFC34A5E)),
+          ),
         ),
         title: const Text(
           "QUICK FASHION",
@@ -51,10 +66,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           SizedBox(width: 15),
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Addtobagscreen()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              // );
             },
             icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
           ),
@@ -66,58 +81,58 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Main Product Image
-            CarouselSlider(
-              items: List.generate(5, (index) {
-                return AnimatedContainer(
-                  duration: Duration(milliseconds: 500),
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: _currentIndex == index ? 10 : 20,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 10,
-                        offset: Offset(0, 5),
-                      ),
-                    ],
-                    image: DecorationImage(
-                      image: AssetImage('assets/girl.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              }),
-              options: CarouselOptions(
-                height: 300,
-                viewportFraction: 0.85,
-                enlargeCenterPage: true,
-                autoPlay: true,
-                autoPlayInterval: Duration(seconds: 3),
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
-                autoPlayCurve: Curves.easeInOut,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-              ),
-            ),
-            SizedBox(height: 30),
-            // Container(
-            //   height: size.width,
-            //   width: size.width,
-            //   margin: const EdgeInsets.all(15),
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(25),
-            //     image: const DecorationImage(
-            //       image: AssetImage('assets/girl.png'), // Main Bag Image
-            //       fit: BoxFit.cover,
-            //     ),
+            // CarouselSlider(
+            //   items: List.generate(5, (index) {
+            //     return AnimatedContainer(
+            //       duration: Duration(milliseconds: 500),
+            //       margin: EdgeInsets.symmetric(
+            //         horizontal: 8,
+            //         vertical: _currentIndex == index ? 10 : 20,
+            //       ),
+            //       decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(20),
+            //         boxShadow: [
+            //           BoxShadow(
+            //             color: Colors.black26,
+            //             blurRadius: 10,
+            //             offset: Offset(0, 5),
+            //           ),
+            //         ],
+            //         image: DecorationImage(
+            //           image: AssetImage('assets/girl.png'),
+            //           fit: BoxFit.cover,
+            //         ),
+            //       ),
+            //     );
+            //   }),
+            //   options: CarouselOptions(
+            //     height: 300,
+            //     viewportFraction: 0.85,
+            //     enlargeCenterPage: true,
+            //     autoPlay: true,
+            //     autoPlayInterval: Duration(seconds: 3),
+            //     autoPlayAnimationDuration: Duration(milliseconds: 800),
+            //     autoPlayCurve: Curves.easeInOut,
+            //     onPageChanged: (index, reason) {
+            //       setState(() {
+            //         _currentIndex = index;
+            //       });
+            //     },
             //   ),
             // ),
+            SizedBox(height: 30),
+            Container(
+              height: size.width,
+              width: size.width,
+              margin: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                image: DecorationImage(
+                  image: AssetImage(widget.image), // Main Bag Image
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
 
             // Thumbnails
             Row(
@@ -142,16 +157,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    "Pulse Aura Bag",
+                  Text(
+                    '${widget.name}',
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w900,
                       color: Color(0xFF4A3239),
                     ),
                   ),
-                  const Text(
-                    "₹1,250.00",
+                  Text(
+                    '₹${widget.price}',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -670,16 +685,24 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           ),
           const SizedBox(width: 15),
 
-          // Add to Bag Button
           Expanded(
             child: InkWell(
-              // InkWell use karein tap effect ke liye
               onTap: () {
-                debugPrint('Navigating to Bag...');
+                final bag = Provider.of<AddtobagProvider>(
+                  context,
+                  listen: false,
+                );
+
+                bag.addItem(widget.name, widget.price, widget.image);
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const Addtobagscreen(),
+                    builder: (context) => Addtobagscreen(
+                      image: widget.image,
+                      name: widget.name,
+                      price: widget.price,
+                    ),
                   ),
                 );
               },

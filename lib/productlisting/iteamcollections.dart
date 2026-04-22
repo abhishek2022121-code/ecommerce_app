@@ -28,7 +28,13 @@ class Iteamcollections extends StatelessWidget {
         centerTitle: true,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/applogo.png'),
+          child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+
+            icon: Icon(Icons.arrow_back_ios, color: Color(0xFFC34A5E)),
+          ),
         ),
         title: const Text(
           "QUICK FASHION",
@@ -43,10 +49,10 @@ class Iteamcollections extends StatelessWidget {
           const SizedBox(width: 15),
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Addtobagscreen()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              // );
             },
             icon: const Icon(
               Icons.shopping_bag_outlined,
@@ -94,7 +100,11 @@ class Iteamcollections extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProductDetailScreen(),
+                    builder: (context) => ProductDetailScreen(
+                      image: 'assets/girl.png',
+                      name: 'Sunset Silk Maxi Dress',
+                      price: '310',
+                    ),
                   ),
                 );
               },

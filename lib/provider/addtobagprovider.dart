@@ -1,67 +1,104 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BagItem {
   final String id, name, category, basePrice, image;
-
   int quantity;
 
   BagItem({
     required this.id,
-
     required this.name,
-
     required this.category,
-
     required this.basePrice,
-
     required this.image,
-
     this.quantity = 1,
   });
 
-  // Logic: Jab quantity badhegi, price bhi multiply ho jayega
+  // ✅ SAFE PRICE (NO CRASH with ₹ / text)
+  double get totalPrice {
+    final clean = basePrice.replaceAll(RegExp(r'[^0-9.]'), '');
+    return (double.tryParse(clean) ?? 0) * quantity;
+  }
 
-  double get totalPrice => double.parse(basePrice) * quantity;
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'category': category,
+    'basePrice': basePrice,
+    'image': image,
+    'quantity': quantity,
+  };
+
+  factory BagItem.fromJson(Map<String, dynamic> json) => BagItem(
+    id: json['id'],
+    name: json['name'],
+    category: json['category'],
+    basePrice: json['basePrice'],
+    image: json['image'],
+    quantity: (json['quantity'] ?? 1) as int,
+  );
 }
 
 class AddtobagProvider extends ChangeNotifier {
-  final List<BagItem> _items = [
-    BagItem(
-      id: '1',
-
-      name: 'Aura Bag',
-
-      category: 'Midnight Burgundy | Medium',
-
-      basePrice: '1250',
-
-      image: 'assets/girl.png',
-    ),
-
-    BagItem(
-      id: '2',
-
-      name: 'Silk Mirage Scarf',
-
-      category: 'Sunset Gradient | One Size',
-
-      basePrice: '320',
-
-      image: 'assets/girl.png',
-    ),
-  ];
+  List<BagItem> _items = [];
 
   List<BagItem> get items => _items;
 
   String selectedPayment = "Credit Card";
-
-  // Address edit logic
 
   String userName = "Dominic West";
 
   String userAddress =
       "249 Lexinton Avenue, Suite 12\nManhattan, New York 10016\n+1 (555) 012-3456";
 
+  AddtobagProvider() {
+    loadCart();
+  }
+
+  // 🔥 LOAD CART (SAFE)
+  Future<void> loadCart() async {
+    final prefs = await SharedPreferences.getInstance();
+    final data = prefs.getString('cart');
+
+    if (data != null && data.isNotEmpty) {
+      final decoded = jsonDecode(data) as List;
+      _items = decoded.map((e) => BagItem.fromJson(e)).toList();
+      notifyListeners();
+    }
+  }
+
+  // 🔥 SAVE CART
+  Future<void> saveCart() async {
+    final prefs = await SharedPreferences.getInstance();
+    final data = jsonEncode(_items.map((e) => e.toJson()).toList());
+    await prefs.setString('cart', data);
+  }
+
+  // ✅ ADD ITEM (NO REPLACE)
+  void addItem(String name, String price, String image) {
+    _items.add(
+      BagItem(
+        id: DateTime.now().toString(),
+        name: name,
+        category: "",
+        basePrice: price,
+        image: image,
+      ),
+    );
+
+    saveCart();
+    notifyListeners();
+  }
+
+  // ❌ DELETE ITEM
+  void removeItem(int index) {
+    _items.removeAt(index);
+    saveCart();
+    notifyListeners();
+  }
+
+  // 🔁 UPDATE QUANTITY
   void updateQuantity(int index, bool isIncrement) {
     if (isIncrement) {
       _items[index].quantity++;
@@ -69,20 +106,18 @@ class AddtobagProvider extends ChangeNotifier {
       _items[index].quantity--;
     }
 
+    saveCart();
     notifyListeners();
   }
 
   void selectPayment(String method) {
     selectedPayment = method;
-
     notifyListeners();
   }
 
   void updateAddress(String name, String address) {
     userName = name;
-
     userAddress = address;
-
     notifyListeners();
   }
 

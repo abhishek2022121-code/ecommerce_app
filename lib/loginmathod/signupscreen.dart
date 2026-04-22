@@ -5,6 +5,7 @@ import 'package:ecomerce/loginmathod/loginscreen.dart';
 import 'package:ecomerce/provider/signupprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupMethodScreen extends StatelessWidget {
   const SignupMethodScreen({super.key});
@@ -185,11 +186,21 @@ class SignupMethodScreen extends StatelessWidget {
                         : [],
                   ),
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       final provider = context.read<SignProvider>();
 
                       if (provider.formKey.currentState!.validate()) {
                         if (provider.isAgreed) {
+                          provider.setloading(true);
+
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+
+                          await prefs.setString(
+                            'name',
+                            provider.nameController.text.trim(),
+                          );
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               backgroundColor: Colors.green,
@@ -197,8 +208,7 @@ class SignupMethodScreen extends StatelessWidget {
                             ),
                           );
 
-                          provider.setloading(true);
-                          Future.delayed(Duration(seconds: 2), () {
+                          Future.delayed(const Duration(seconds: 2), () {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(builder: (_) => Navbaritems()),
@@ -206,6 +216,7 @@ class SignupMethodScreen extends StatelessWidget {
                           });
                         } else {
                           provider.setloading(false);
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               backgroundColor: Colors.red,
@@ -214,8 +225,8 @@ class SignupMethodScreen extends StatelessWidget {
                           );
                         }
                       } else {
-                        // Validation failed
                         provider.setloading(false);
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text("Please fill all fields correctly"),

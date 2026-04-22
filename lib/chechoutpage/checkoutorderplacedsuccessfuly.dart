@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:ecomerce/provider/checkoutorderplacedsuccsefullyprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Checkoutorderplacedsuccessfulyscreen extends StatelessWidget {
   const Checkoutorderplacedsuccessfulyscreen({super.key});
@@ -371,39 +374,56 @@ class Checkoutorderplacedsuccessfulyscreen extends StatelessWidget {
     String title,
     String desc,
   ) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: padding),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Color(0xFFFDF1F3),
-              shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: () async {
+        print('hello bhai');
+
+        String contactname = "9648628225";
+
+        if (Platform.isAndroid) {
+          String url =
+              "whatsapp://send?phone=$contactname&text=${Uri.encodeComponent('Hi, I need help')}";
+          await launchUrl(Uri.parse(url));
+        } else {
+          String url =
+              "https://wa.me/$contactname?text=${Uri.encodeComponent('Hi, I need help')}";
+          await launchUrl(Uri.parse(url));
+        }
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: padding),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                color: Color(0xFFFDF1F3),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: const Color(0xFF8E213D), size: 24),
             ),
-            child: Icon(icon, color: const Color(0xFF8E213D), size: 24),
-          ),
-          const SizedBox(height: 15),
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            desc,
-            style: const TextStyle(
-              color: Colors.grey,
-              fontSize: 12,
-              height: 1.4,
+            const SizedBox(height: 15),
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
             ),
-          ),
-        ],
+            const SizedBox(height: 5),
+            Text(
+              desc,
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+                height: 1.4,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

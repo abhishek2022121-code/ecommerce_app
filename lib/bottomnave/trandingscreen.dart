@@ -37,10 +37,10 @@ class TrendingScreen extends StatelessWidget {
           SizedBox(width: 15),
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Addtobagscreen()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              // );
             },
             icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
           ),
@@ -92,7 +92,11 @@ class TrendingScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProductDetailScreen(),
+                            builder: (context) => ProductDetailScreen(
+                              image: 'assets/girl.png',
+                              name: "Cloud Knit Set",
+                              price: "₹250",
+                            ),
                           ),
                         );
                       },
@@ -112,7 +116,11 @@ class TrendingScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProductDetailScreen(),
+                            builder: (context) => ProductDetailScreen(
+                              image: 'assets/girl.png',
+                              name: 'Prism Shades',
+                              price: '₹180',
+                            ),
                           ),
                         );
                       },
@@ -202,7 +210,11 @@ class TrendingScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProductDetailScreen(),
+                        builder: (context) => ProductDetailScreen(
+                          image: 'assets/girl.png',
+                          name: 'product 1',
+                          price: '₹500',
+                        ),
                       ),
                     );
                   },
