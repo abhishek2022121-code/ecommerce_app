@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ecomerce/bottomnave/navbaritems.dart';
 import 'package:ecomerce/provider/checkoutorderplacedsuccsefullyprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -200,36 +201,48 @@ class Checkoutorderplacedsuccessfulyscreen extends StatelessWidget {
             // Continue Shopping Button
             Padding(
               padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: Container(
-                height: 65,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF8E213D), Color(0xFFE37A8F)],
-                  ),
-                  borderRadius: BorderRadius.circular(35),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF8E213D).withOpacity(0.3),
-                      blurRadius: 15,
-                      offset: const Offset(0, 8),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Navbaritems()),
+                  );
+                },
+                child: Container(
+                  height: 65,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF8E213D), Color(0xFFE37A8F)],
                     ),
-                  ],
-                ),
-                child: const Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Continue Shopping",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 16,
-                        ),
+                    borderRadius: BorderRadius.circular(35),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF8E213D).withOpacity(0.3),
+                        blurRadius: 15,
+                        offset: const Offset(0, 8),
                       ),
-                      SizedBox(width: 10),
-                      Icon(Icons.arrow_forward, color: Colors.white, size: 20),
                     ],
+                  ),
+                  child: const Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Continue Shopping",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

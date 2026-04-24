@@ -112,6 +112,16 @@ class AddtobagProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ✅ UPDATE QUANTITY BY NAME (Syncing for ProductDetailScreen)
+  void updateQuantityByName(String name, int newQuantity) {
+    int index = _items.indexWhere((item) => item.name == name);
+    if (index != -1) {
+      _items[index].quantity = newQuantity;
+      saveCart(); // Save updated quantity to storage
+      notifyListeners();
+    }
+  }
+
   void selectPayment(String method) {
     selectedPayment = method;
     notifyListeners();
