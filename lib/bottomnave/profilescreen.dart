@@ -1,9 +1,13 @@
 import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/bottomnave/wishlistscreen.dart';
+import 'package:ecomerce/loginmathod/signupscreen.dart';
 import 'package:ecomerce/profile/myorder.dart';
+import 'package:ecomerce/profile/profilesetting.dart';
 import 'package:ecomerce/provider/profileprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:shivam/prvider/profileprovider.dart';
 //import 'profile_provider.dart';
 
@@ -33,10 +37,10 @@ class ProfileScreen extends StatelessWidget {
             padding: EdgeInsets.only(right: 12),
             child: IconButton(
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => Addtobagscreen()),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Addtobagscreen()),
+                );
               },
               icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
             ),
@@ -63,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
 
               /// Profile Card
               Container(
-                height: height * 0.18,
+                height: height * 0.20,
                 padding: EdgeInsets.symmetric(
                   horizontal: width * 0.04,
                   vertical: height * 0.02,
@@ -92,7 +96,105 @@ class ProfileScreen extends StatelessWidget {
                           bottom: 0,
                           left: 0,
                           child: GestureDetector(
-                            onTap: () => provider.pickImage(),
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                builder: (context) => Container(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "Profile Photo",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(
+                                            0xFFC34A5E,
+                                          ), // Aapka primary color
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          // Camera Option
+                                          GestureDetector(
+                                            onTap: () {
+                                              provider.pickImage(
+                                                ImageSource.camera,
+                                              );
+                                              Navigator.pop(context);
+                                            },
+                                            child: Column(
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 30,
+                                                  backgroundColor: const Color(
+                                                    0xFFC34A5E,
+                                                    // ignore: deprecated_member_use
+                                                  ).withOpacity(0.1),
+                                                  child: const Icon(
+                                                    Icons.camera_alt,
+                                                    color: Color(0xFFC34A5E),
+                                                    size: 30,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 8),
+                                                const Text(
+                                                  "Camera",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          // Gallery Option
+                                          GestureDetector(
+                                            onTap: () {
+                                              provider.pickImage(
+                                                ImageSource.gallery,
+                                              );
+                                              Navigator.pop(context);
+                                            },
+                                            child: Column(
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 30,
+                                                  backgroundColor: const Color(
+                                                    0xFFC34A5E,
+                                                  ).withOpacity(0.1),
+                                                  child: const Icon(
+                                                    Icons.photo_library,
+                                                    color: Color(0xFFC34A5E),
+                                                    size: 30,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 8),
+                                                const Text(
+                                                  "Gallery",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
                             child: Container(
                               height: width * 0.05,
                               width: width * 0.05,
@@ -118,13 +220,32 @@ class ProfileScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            provider.name,
-                            style: TextStyle(
-                              fontSize: width * 0.055,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black87,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                provider.name,
+                                style: TextStyle(
+                                  fontSize: width * 0.055,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Profilesetting(),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.settings,
+                                  color: Color(0xFFC34A5E),
+                                ),
+                              ),
+                            ],
                           ),
 
                           SizedBox(height: height * 0.015),
@@ -151,12 +272,13 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(height: height * 0.03),
 
               GridView.count(
+                padding: EdgeInsets.zero, // Fixes default internal spacing
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisSpacing: width * 0.04,
                 mainAxisSpacing: height * 0.02,
-                childAspectRatio: 1.3,
+                childAspectRatio: 1.4,
                 children: [
                   GestureDetector(
                     onTap: () {
@@ -184,7 +306,7 @@ class ProfileScreen extends StatelessWidget {
                   _gridItem(Icons.credit_card, "PAYMENT"),
                 ],
               ),
-              SizedBox(height: height * 0.01),
+              SizedBox(height: height * 0.03),
 
               /// Account Settings
               Text(
@@ -192,7 +314,8 @@ class ProfileScreen extends StatelessWidget {
                 style: TextStyle(
                   letterSpacing: 2,
                   fontSize: width * 0.03,
-                  color: Colors.grey,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
 
@@ -231,6 +354,8 @@ class ProfileScreen extends StatelessWidget {
                               style: TextStyle(color: Colors.grey),
                             ),
                           ),
+
+                          // ✅ SIGN OUT BUTTON
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.pink.shade100,
@@ -238,9 +363,33 @@ class ProfileScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              provider.logout();
+                            onPressed: () async {
+                              Navigator.pop(context); // close dialog
+
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+
+                              // ❌ LOGOUT (IMPORTANT)
+                              await prefs.setBool('isLogin', false);
+                              await prefs.remove('name');
+                              await prefs.remove('email');
+
+                              // ✅ Snackbar
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Logout Successful"),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+
+                              // ✅ Navigate to intro/login screen
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => SignupMethodScreen(),
+                                ),
+                                (route) => false,
+                              );
                             },
                             child: const Text(
                               "Sign Out",
@@ -337,8 +486,8 @@ class ProfileScreen extends StatelessWidget {
   /// Grid Item
   Widget _gridItem(IconData icon, String title) {
     return Container(
-      height: 100,
-      width: 100,
+      // height: 100,
+      // width: 100,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),

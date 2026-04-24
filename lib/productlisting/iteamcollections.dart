@@ -49,10 +49,10 @@ class Iteamcollections extends StatelessWidget {
           const SizedBox(width: 15),
           IconButton(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => Addtobagscreen()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              );
             },
             icon: const Icon(
               Icons.shopping_bag_outlined,
@@ -68,8 +68,8 @@ class Iteamcollections extends StatelessWidget {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: ratio,
-          crossAxisSpacing: 15,
-          mainAxisSpacing: 20,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
         ),
         itemCount: provider.products.length,
         itemBuilder: (context, index) {

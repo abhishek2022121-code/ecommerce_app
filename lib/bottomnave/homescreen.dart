@@ -78,7 +78,7 @@ class _HomescreenState extends State<Homescreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Iteamcollections()),
+                MaterialPageRoute(builder: (context) => Addtobagscreen()),
               );
             },
             icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),

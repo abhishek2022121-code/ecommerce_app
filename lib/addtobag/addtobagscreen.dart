@@ -9,15 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Addtobagscreen extends StatelessWidget {
-  String image;
-  String name;
-  String price;
-  Addtobagscreen({
-    super.key,
-    required this.image,
-    required this.name,
-    required this.price,
-  });
+  String? image;
+  String? name;
+  String? price;
+  final int? quantity;
+  Addtobagscreen({super.key, this.image, this.name, this.price, this.quantity});
 
   @override
   Widget build(BuildContext context) {
@@ -338,11 +334,7 @@ class Addtobagscreen extends StatelessWidget {
 
           IconButton(
             onPressed: () => bag.removeItem(index),
-            icon: const Icon(
-              Icons.delete_outline,
-              color: Colors.redAccent,
-              size: 20,
-            ),
+            icon: const Icon(Icons.close, color: Colors.redAccent, size: 20),
           ),
         ],
       ),

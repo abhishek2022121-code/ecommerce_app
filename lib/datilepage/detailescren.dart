@@ -5,6 +5,7 @@ import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/productlisting/iteamcollections.dart';
 import 'package:ecomerce/provider/addtobagprovider.dart';
 import 'package:ecomerce/provider/productdetaileprovider.dart';
+import 'package:ecomerce/provider/wishlistprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class ProductDetailScreen extends StatefulWidget {
   String price;
   ProductDetailScreen({
     super.key,
+
     required this.image,
     required this.name,
     required this.price,
@@ -660,31 +662,156 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     BuildContext context,
     ProductDetailsProvider provider,
   ) {
+    const primaryColor = Color(
+      0xFF9E2A47,
+    ); // Darker berry/maroon shade from image
+    const lightPink = Color(0xFFFFF0F3); // Light background for stepper
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(top: BorderSide(color: Colors.black12, width: 0.5)),
       ),
       child: Row(
         children: [
-          // Favorite Icon
-          GestureDetector(
-            onTap: () => provider.toggleFavorite(),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFFC34A5E)),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                provider.isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: const Color(0xFFC34A5E),
-              ),
+          // 1. Favorite Button
+          // 1. Favorite Button (Product Details Screen ke andar)
+          _buildSquareIconButton(
+            // Check kijiye ki kya ye product already wishlist mein hai
+            icon:
+                Provider.of<WishlistProvider>(context).isFavorite(
+                  widget.name,
+                ) // widget.id use karein
+                ? Icons.favorite
+                : Icons.favorite_border,
+            color: primaryColor,
+            onTap: () {
+              final wishlistProvider = Provider.of<WishlistProvider>(
+                context,
+                listen: false,
+              );
+
+              final product = Product(
+                id: widget
+                    .name, // widget.name ko hi ID ki tarah use kar rahe hain
+                name: widget.name,
+                price: widget.price,
+                image: widget.image,
+                brand: "Quick Fashion",
+              );
+
+              wishlistProvider.toggleWishlist(product);
+
+              // Stylish SnackBar Logic
+              final bool isAdded = wishlistProvider.isFavorite(product.id);
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Row(
+                    children: [
+                      Icon(
+                        isAdded
+                            ? Icons.check_circle_outline
+                            : Icons.remove_circle_outline,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        isAdded
+                            ? "Added to Wishlist!"
+                            : "Removed from Wishlist",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  backgroundColor: isAdded
+                      ? Colors.green.shade600
+                      : Colors.red.shade600, // Dynamic Color
+                  behavior: SnackBarBehavior
+                      .floating, // Isse snackbar thoda upar float karega
+                  margin: const EdgeInsets.all(15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  duration: const Duration(milliseconds: 1500),
+                  elevation: 6,
+                ),
+              );
+            },
+          ),
+          const SizedBox(width: 12),
+
+          _buildSquareIconButton(
+            icon: Icons.shopping_bag_outlined,
+            onTap: () {
+              final bag = Provider.of<AddtobagProvider>(context, listen: false);
+
+              bag.addItem(
+                widget.name,
+                widget.price,
+                widget.image,
+                provider.quantity,
+              );
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Addtobagscreen(
+                    image: widget.image,
+                    name: widget.name,
+                    price: widget.price,
+                    quantity: provider.quantity,
+                  ),
+                ),
+              );
+            },
+
+            color: primaryColor,
+          ),
+          const SizedBox(width: 12),
+
+          // 3. Quantity Stepper
+          Container(
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              color: lightPink,
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  visualDensity: VisualDensity.compact,
+                  icon: const Icon(Icons.remove, color: primaryColor, size: 20),
+                  onPressed: () => provider.decrementQuantity(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    "${provider.quantity}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  visualDensity: VisualDensity.compact,
+                  icon: const Icon(Icons.add, color: primaryColor, size: 20),
+                  onPressed: () => provider.incrementQuantity(),
+                ),
+              ],
             ),
           ),
-          const SizedBox(width: 15),
+          const SizedBox(width: 12),
 
+          // 4. Buy Now Button
           Expanded(
             child: InkWell(
               onTap: () {
@@ -693,8 +820,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   listen: false,
                 );
 
-                bag.addItem(widget.name, widget.price, widget.image);
+                // 1. Provider me current quantity bhej rahe hain (Jo stepper se select hui hai)
+                bag.addItem(
+                  widget.name,
+                  widget.price,
+                  widget.image,
+                  provider.quantity, // <--- Ye pass karein
+                );
 
+                // 2. Agli screen par bhi wahi quantity bhej rahe hain
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -702,46 +836,33 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       image: widget.image,
                       name: widget.name,
                       price: widget.price,
+                      quantity: provider
+                          .quantity, // <--- Screen constructor me bhi pass karein
                     ),
                   ),
                 );
               },
               child: Container(
-                height: 55, // Height thodi badhai for better UI
+                height: 50,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFFC34A5E), Color(0xFFE47A8F)],
+                    colors: [Color(0xFF9E2A47), Color(0xFFD65A74)],
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                   ),
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFFC34A5E).withOpacity(0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
+                  borderRadius: BorderRadius.circular(18),
                 ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.shopping_bag_outlined,
+                alignment: Alignment.center,
+                child: Center(
+                  child: const Text(
+                    "BUY NOW",
+                    style: TextStyle(
                       color: Colors.white,
-                      size: 22,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      letterSpacing: 0.5,
                     ),
-                    SizedBox(width: 10),
-                    Text(
-                      "ADD TO BAG",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 16,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -750,4 +871,123 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ),
     );
   }
+
+  // Helper for the square outline buttons
+  Widget _buildSquareIconButton({
+    required IconData icon,
+    required VoidCallback onTap,
+    required Color color,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          border: Border.all(color: color, width: 1.5),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Icon(icon, color: color, size: 26),
+      ),
+    );
+  }
 }
+
+
+
+
+
+
+//  Widget _buildBottomActionBar(
+//     BuildContext context,
+//     ProductDetailsProvider provider,
+//   ) {
+//     return Container(
+//       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+//       decoration: const BoxDecoration(
+//         color: Colors.white,
+//         border: Border(top: BorderSide(color: Colors.black12, width: 0.5)),
+//       ),
+//       child: Row(
+//         children: [
+//           // Favorite Icon
+//           GestureDetector(
+//             onTap: () => provider.toggleFavorite(),
+//             child: Container(
+//               padding: const EdgeInsets.all(12),
+//               decoration: BoxDecoration(
+//                 border: Border.all(color: const Color(0xFFC34A5E)),
+//                 borderRadius: BorderRadius.circular(12),
+//               ),
+//               child: Icon(
+//                 provider.isFavorite ? Icons.favorite : Icons.favorite_border,
+//                 color: const Color(0xFFC34A5E),
+//               ),
+//             ),
+//           ),
+//           const SizedBox(width: 15),
+
+//           Expanded(
+//             child: InkWell(
+//               onTap: () {
+//                 final bag = Provider.of<AddtobagProvider>(
+//                   context,
+//                   listen: false,
+//                 );
+
+//                 bag.addItem(widget.name, widget.price, widget.image);
+
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                     builder: (context) => Addtobagscreen(
+//                       image: widget.image,
+//                       name: widget.name,
+//                       price: widget.price,
+//                     ),
+//                   ),
+//                 );
+//               },
+//               child: Container(
+//                 height: 55, // Height thodi badhai for better UI
+//                 decoration: BoxDecoration(
+//                   gradient: const LinearGradient(
+//                     colors: [Color(0xFFC34A5E), Color(0xFFE47A8F)],
+//                     begin: Alignment.centerLeft,
+//                     end: Alignment.centerRight,
+//                   ),
+//                   borderRadius: BorderRadius.circular(15),
+//                   boxShadow: [
+//                     BoxShadow(
+//                       color: const Color(0xFFC34A5E).withOpacity(0.3),
+//                       blurRadius: 10,
+//                       offset: const Offset(0, 5),
+//                     ),
+//                   ],
+//                 ),
+//                 child: const Row(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     Icon(
+//                       Icons.shopping_bag_outlined,
+//                       color: Colors.white,
+//                       size: 22,
+//                     ),
+//                     SizedBox(width: 10),
+//                     Text(
+//                       "ADD TO BAG",
+//                       style: TextStyle(
+//                         color: Colors.white,
+//                         fontWeight: FontWeight.w900,
+//                         fontSize: 16,
+//                         letterSpacing: 1,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }

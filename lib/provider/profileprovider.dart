@@ -24,9 +24,9 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> pickImage() async {
+  Future<void> pickImage(ImageSource source) async {
     final XFile? image = await _picker.pickImage(
-      source: ImageSource.gallery,
+      source: source, // Yahan dynamic source aayega
       imageQuality: 80,
     );
 

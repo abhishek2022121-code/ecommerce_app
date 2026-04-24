@@ -47,10 +47,10 @@ class Wishlistscreen extends StatelessWidget {
           SizedBox(width: 15),
           IconButton(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => Addtobagscreen()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              );
             },
             icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
           ),

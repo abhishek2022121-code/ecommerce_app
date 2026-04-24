@@ -76,7 +76,8 @@ class AddtobagProvider extends ChangeNotifier {
   }
 
   // ✅ ADD ITEM (NO REPLACE)
-  void addItem(String name, String price, String image) {
+  // ✅ ADD ITEM (Ab ye selected quantity ke sath add karega)
+  void addItem(String name, String price, String image, int selectedQuantity) {
     _items.add(
       BagItem(
         id: DateTime.now().toString(),
@@ -84,6 +85,7 @@ class AddtobagProvider extends ChangeNotifier {
         category: "",
         basePrice: price,
         image: image,
+        quantity: selectedQuantity, // <--- Yaha quantity set karein
       ),
     );
 

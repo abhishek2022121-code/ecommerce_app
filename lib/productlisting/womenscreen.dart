@@ -25,7 +25,13 @@ class WomenScreen extends StatelessWidget {
         centerTitle: true,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/applogo.png'),
+          child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+
+            icon: Icon(Icons.arrow_back_ios, color: Color(0xFFC34A5E)),
+          ),
         ),
         title: const Text(
           "QUICK FASHION",

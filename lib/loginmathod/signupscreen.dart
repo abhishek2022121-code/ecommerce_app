@@ -193,27 +193,53 @@ class SignupMethodScreen extends StatelessWidget {
                         if (provider.isAgreed) {
                           provider.setloading(true);
 
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
+                          try {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
 
-                          await prefs.setString(
-                            'name',
-                            provider.nameController.text.trim(),
-                          );
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              backgroundColor: Colors.green,
-                              content: Text("Login Successful"),
-                            ),
-                          );
-
-                          Future.delayed(const Duration(seconds: 2), () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (_) => Navbaritems()),
+                            // ✅ SAVE USER DATA
+                            await prefs.setString(
+                              'name',
+                              provider.nameController.text.trim(),
                             );
-                          });
+
+                            await prefs.setString(
+                              'email',
+                              provider.emailController.text.trim(),
+                            );
+
+                            // ⭐ IMPORTANT: LOGIN FLAG SET (Splashscreen ke liye)
+                            await prefs.setBool('isLogin', true);
+
+                            provider.setloading(false);
+
+                            // GREEN SNACKBAR
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text("Login Successful"),
+                              ),
+                            );
+
+                            // NAVIGATE AFTER DELAY
+                            Future.delayed(const Duration(seconds: 2), () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => Navbaritems(),
+                                ),
+                              );
+                            });
+                          } catch (e) {
+                            provider.setloading(false);
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text("Error: $e"),
+                              ),
+                            );
+                          }
                         } else {
                           provider.setloading(false);
 

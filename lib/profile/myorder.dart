@@ -1,3 +1,4 @@
+import 'package:ecomerce/orderdetaile/orderdetailscreen.dart';
 import 'package:flutter/material.dart';
 
 class MyOrderScreen extends StatelessWidget {
@@ -17,6 +18,14 @@ class MyOrderScreen extends StatelessWidget {
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back, color: Color(0xFF70122B)),
+        ),
+        title: Text(
+          'My Orders',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFC3374E),
+          ),
         ),
         actions: [
           IconButton(
@@ -85,7 +94,7 @@ class MyOrderScreen extends StatelessWidget {
               price: "₹345.50",
               orderId: "#VP-712893",
               date: "OCT 15, 2023",
-              imagePath: "assets/bag.png", // Replace with your image
+              imagePath: "assets/girl.png", // Replace with your image
             ),
 
             const SizedBox(height: 20),
@@ -96,7 +105,7 @@ class MyOrderScreen extends StatelessWidget {
               price: "₹220.00",
               orderId: "#VP-655412",
               date: "SEPT 28, 2023",
-              imagePath: "assets/blazer.png", // Replace with your image
+              imagePath: "assets/girl.png", // Replace with your image
             ),
 
             const SizedBox(height: 20),
@@ -162,9 +171,7 @@ class MyOrderScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Center(
-              child: Image.network(
-                "https://img.freepik.com/free-photo/yellow-trousers-white-background_53876-102771.jpg",
-              ),
+              child: Image.asset('assets/girl.png'),
             ), // Replace with local asset
           ),
           const SizedBox(height: 15),
@@ -237,9 +244,15 @@ class MyOrderScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          _largeButton("TRACK ORDER", const Color(0xFFC3374E), Colors.white),
+          _largeButton(
+            context,
+            "TRACK ORDER",
+            const Color(0xFFC3374E),
+            Colors.white,
+          ),
           const SizedBox(height: 10),
           _largeButton(
+            context,
             "ORDER DETAILS",
             const Color(0xFFF8D7DA),
             const Color(0xFF70122B),
@@ -276,11 +289,7 @@ class MyOrderScreen extends StatelessWidget {
               color: const Color(0xFFF5F5F5),
               borderRadius: BorderRadius.circular(15),
             ),
-            child: const Icon(
-              Icons.shopping_bag_outlined,
-              size: 50,
-              color: Colors.grey,
-            ), // Placeholder
+            child: Image.asset('assets/girl.png', fit: BoxFit.cover),
           ),
           const SizedBox(height: 15),
           Row(
@@ -350,7 +359,7 @@ class MyOrderScreen extends StatelessWidget {
           Container(
             height: 140,
             width: double.infinity,
-            child: const Icon(Icons.cloud_off, size: 50, color: Colors.grey),
+            child: Image.asset('assets/girl.png', fit: BoxFit.cover),
           ),
           const Text(
             "Midnight Stilettos",
@@ -388,12 +397,19 @@ class MyOrderScreen extends StatelessWidget {
 
   // Recommended List
   Widget _buildRecommendedList(double width) {
-    return Row(
-      children: [
-        _recommendationItem("Ethereal Bloom Dress", "₹125", width),
-        const SizedBox(width: 15),
-        _recommendationItem("Nimbus Sneakers", "₹89", width),
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          _recommendationItem("Ethereal Bloom Dress", "₹125", width),
+          const SizedBox(width: 15),
+          _recommendationItem("Nimbus Sneakers", "₹89", width),
+          const SizedBox(width: 15),
+          _recommendationItem("Nimbus Sneakers", "₹89", width),
+          const SizedBox(width: 15),
+          _recommendationItem("Nimbus Sneakers", "₹89", width),
+        ],
+      ),
     );
   }
 
@@ -405,10 +421,12 @@ class MyOrderScreen extends StatelessWidget {
           width: width * 0.42,
           height: 180,
           decoration: BoxDecoration(
-            color: Colors.white,
             borderRadius: BorderRadius.circular(20),
+            image: const DecorationImage(
+              image: AssetImage('assets/girl.png'),
+              fit: BoxFit.cover,
+            ),
           ),
-          child: const Icon(Icons.check, color: Colors.pink, size: 40),
         ),
         const SizedBox(height: 8),
         Text(
@@ -449,7 +467,12 @@ class MyOrderScreen extends StatelessWidget {
     );
   }
 
-  Widget _largeButton(String text, Color bgColor, Color textColor) {
+  Widget _largeButton(
+    BuildContext context,
+    String text,
+    Color bgColor,
+    Color textColor,
+  ) {
     return SizedBox(
       width: double.infinity,
       height: 50,
@@ -461,7 +484,12 @@ class MyOrderScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => OrderDetailsScreen()),
+          );
+        },
         child: Text(
           text,
           style: TextStyle(
