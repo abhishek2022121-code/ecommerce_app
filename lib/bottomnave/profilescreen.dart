@@ -1,8 +1,8 @@
 import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/bottomnave/wishlistscreen.dart';
 import 'package:ecomerce/loginmathod/signupscreen.dart';
-import 'package:ecomerce/profile/myorder.dart';
-import 'package:ecomerce/profile/profilesetting.dart';
+import 'package:ecomerce/profile/myorderscreen.dart';
+import 'package:ecomerce/profile/profilesettingpage.dart';
 import 'package:ecomerce/provider/profileprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -236,7 +236,8 @@ class ProfileScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Profilesetting(),
+                                      builder: (context) =>
+                                          ProfileSettingPage(),
                                     ),
                                   );
                                 },
@@ -285,7 +286,7 @@ class ProfileScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MyOrderScreen(),
+                          builder: (context) => MyOrdersScreen(),
                         ),
                       );
                     },
