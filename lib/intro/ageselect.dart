@@ -1,5 +1,6 @@
 import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/bottomnave/navbaritems.dart';
+import 'package:ecomerce/constomappbar/costomloginappbar.dart';
 import 'package:ecomerce/intro/gender.dart';
 import 'package:ecomerce/intro/selectstyle.dart';
 import 'package:ecomerce/l10n/app_localizations.dart';
@@ -28,28 +29,11 @@ class AgeSelectionScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldBg,
-      appBar: AppBar(
-        backgroundColor: AppColors.scaffoldBg,
-        elevation: 4.0,
-
-        shadowColor: AppColors.black.withOpacity(0.3),
-
-        //elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.close, color: AppColors.textPrimary),
-        ),
-        title: Text(
-          l10n.appTitle, // Localized
-          style: const TextStyle(
-            color: AppColors.black,
-            fontWeight: FontWeight.w900,
-            fontSize: 14,
-            letterSpacing: 1,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
+      appBar: CustomLoginAppBar(
+        leadingIcon: const Icon(Icons.close, color: AppColors.textPrimary),
+        title: l10n.appTitle,
+        onLeadingPressed: () => Navigator.pop(context),
+        customActions: [
           TextButton(
             onPressed: () {
               Navigator.pushReplacement(

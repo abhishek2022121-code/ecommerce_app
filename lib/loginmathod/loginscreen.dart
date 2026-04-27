@@ -1,5 +1,6 @@
 import 'package:ecomerce/bottomnave/navbaritems.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/constomappbar/costomloginappbar.dart';
 import 'package:ecomerce/l10n/app_localizations.dart';
 import 'package:ecomerce/loginmathod/signupscreen.dart';
 import 'package:ecomerce/provider/loginprovider.dart';
@@ -17,24 +18,12 @@ class LoginScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.primary),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          l10n.appTitle,
-          style: const TextStyle(
-            color: AppColors.black,
-            fontWeight: FontWeight.w900,
-            fontSize: 16,
-            letterSpacing: 1,
-          ),
-        ),
-        actions: [
+      backgroundColor: AppColors.scaffoldBg,
+      appBar: CustomLoginAppBar(
+        leadingIcon: const Icon(Icons.close, color: AppColors.textPrimary),
+        title: l10n.appTitle,
+        onLeadingPressed: () => Navigator.pop(context),
+        customActions: [
           TextButton(
             onPressed: () {
               Navigator.pushReplacement(

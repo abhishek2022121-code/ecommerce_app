@@ -330,6 +330,7 @@
 
 import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/constomappbar/costomsearchappbar.dart';
 import 'package:ecomerce/productlisting/iteamcollections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -345,40 +346,14 @@ class Categories extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFDF7F8),
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        elevation: 4.0,
-
-        shadowColor: AppColors.black.withOpacity(0.3),
-        // elevation: 0.5,
-        leading: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Image.asset('assets/applogo.png', fit: BoxFit.contain),
-        ),
-        title: Text(
-          "QUICK FASHION",
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w900,
-            fontSize: screenWidth * 0.045,
-            letterSpacing: 1.1,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          Icon(Icons.search, color: AppColors.primary),
-          SizedBox(width: 15),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Addtobagscreen()),
-              );
-            },
-            icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
-          ),
-          SizedBox(width: padding),
-        ],
+      appBar: CustomSearchAppBar(
+        title: 'QUICK FASHION',
+        onBagPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Addtobagscreen()),
+          );
+        },
       ),
       body: SingleChildScrollView(
         child: Padding(

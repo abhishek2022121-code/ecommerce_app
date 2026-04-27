@@ -12,7 +12,7 @@ class AllOrderPage extends StatelessWidget {
     final orders = Provider.of<AllOrderProvider>(context).orders;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDF0F3), // Light pink background
+      backgroundColor: const Color(0xFFFDF0F3),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
         child: Column(

@@ -1,4 +1,6 @@
 import 'package:ecomerce/chechoutpage/ckeckoutordersummeryscreen.dart';
+import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/constomappbar/costomloginappbar.dart';
 import 'package:ecomerce/provider/checkoutscreenprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,22 +14,11 @@ class Checkoutscreen extends StatelessWidget {
     final provider = Provider.of<CheckoutScreenProvider>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF9FA), // Light cream-pink background
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFFC34A5E)),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          "Check Out",
-          style: TextStyle(
-            color: Color(0xFFC34A5E),
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
+      backgroundColor: AppColors.scaffoldBg,
+      appBar: CustomLoginAppBar(
+        leadingIcon: const Icon(Icons.arrow_back_ios, color: Color(0xFFC34A5E)),
+        title: 'Check Out',
+        onLeadingPressed: () => Navigator.pop(context),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),

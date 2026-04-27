@@ -1,5 +1,6 @@
 import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/constomappbar/costomsearchappbar.dart';
 import 'package:ecomerce/datilepage/detailescren.dart';
 import 'package:ecomerce/productlisting/iteamcollections.dart';
 import 'package:ecomerce/provider/wishlistprovider.dart';
@@ -16,47 +17,20 @@ class WomenScreen extends StatelessWidget {
     final height = size.height;
 
     return Scaffold(
-      backgroundColor: ColorStyle.scaffoldBg,
-
-      // ================= APPBAR =================
-      appBar: AppBar(
-        backgroundColor: ColorStyle.scaffoldBg,
-        elevation: 0,
-        centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-
-            icon: Icon(Icons.arrow_back_ios, color: Color(0xFFC34A5E)),
-          ),
+      backgroundColor: const Color(0xFFFDF7F8),
+      appBar: CustomSearchAppBar(
+        title: 'QUICK FASHION',
+        leadingWidget: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Color(0xFFC34A5E)),
+          onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "QUICK FASHION",
-          style: TextStyle(
-            color: ColorStyle.textPrimary,
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-          ),
-        ),
-        actions: [
-          Icon(Icons.search, color: Color(0xFFC34A5E)),
-          SizedBox(width: 15),
-          IconButton(
-            onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => Addtobagscreen()),
-              // );
-            },
-            icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
-          ),
-          SizedBox(width: 15),
-        ],
+        onBagPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Addtobagscreen()),
+          );
+        },
       ),
-
       // ================= BODY =================
       body: SingleChildScrollView(
         child: Column(
@@ -447,6 +421,7 @@ class WomenScreen extends StatelessWidget {
                     image: 'assets/girl.png',
                     name: "Linen Blend Blazer",
                     price: "245",
+                    id: '12',
                   ),
                 ),
               );

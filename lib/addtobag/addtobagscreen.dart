@@ -1,6 +1,7 @@
 import 'package:ecomerce/chechoutpage/checkoutscreen.dart';
 
 import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/constomappbar/costomsearchappbar.dart';
 
 import 'package:ecomerce/provider/addtobagprovider.dart';
 
@@ -24,52 +25,19 @@ class Addtobagscreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFFDF7F8),
 
-      appBar: AppBar(
-        backgroundColor: ColorStyle.scaffoldBg,
-
-        elevation: 4.0,
-
-        shadowColor: AppColors.black.withOpacity(0.3),
-
-        centerTitle: true,
-
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-
-          child: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-
-            icon: Icon(Icons.arrow_back_ios, color: Color(0xFFC34A5E)),
-          ),
-
-          // Image.asset('assets/applogo.png'),
+      appBar: CustomSearchAppBar(
+        title: 'QUICK FASHION',
+        leadingWidget: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Color(0xFFC34A5E)),
+          onPressed: () => Navigator.pop(context),
         ),
-
-        title: const Text(
-          "QUICK FASHION",
-
-          style: TextStyle(
-            color: ColorStyle.textPrimary,
-
-            fontWeight: FontWeight.w900,
-
-            fontSize: 18,
-          ),
-        ),
-
-        actions: const [
-          Icon(Icons.search, color: Color(0xFFC34A5E)),
-
-          SizedBox(width: 15),
-
-          Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
-
-          SizedBox(width: 15),
-        ],
+        onBagPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Addtobagscreen()),
+          );
+        },
       ),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
 
@@ -238,105 +206,127 @@ class Addtobagscreen extends StatelessWidget {
     final item = bag.items[index];
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-
-      padding: const EdgeInsets.all(12),
-
+      margin: const EdgeInsets.only(bottom: 16, left: 4, right: 4),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
+        // Halki shadow professional look ke liye
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Product Image
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: Image.asset(
               item.image,
-              width: 85,
-              height: 85,
+              width: 90,
+              height: 90,
               fit: BoxFit.cover,
             ),
           ),
+          const SizedBox(width: 12),
 
-          const SizedBox(width: 15),
-
+          // Product Details
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   item.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 15,
+                    color: Color(0xFF332F32),
                   ),
                 ),
-
-                Text(
-                  item.category,
-                  style: const TextStyle(
-                    color: ColorStyle.textLight,
-                    fontSize: 12,
+                if (item.category.isNotEmpty)
+                  Text(
+                    item.category,
+                    style: const TextStyle(color: Colors.grey, fontSize: 11),
                   ),
-                ),
-
-                const SizedBox(height: 12),
-
-                // Dynamic Price
+                const SizedBox(height: 8),
                 Text(
                   "₹${item.totalPrice.toInt()}",
                   style: const TextStyle(
                     fontWeight: FontWeight.w900,
                     color: Color(0xFFC34A5E),
-                    fontSize: 18,
+                    fontSize: 17,
                   ),
                 ),
               ],
             ),
           ),
 
-          // Quantity Box
-          Container(
-            height: 35,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFDF2F4),
-              borderRadius: BorderRadius.circular(20),
-            ),
+          // Quantity Controls & Delete
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              // Delete Icon (Top Right)
+              GestureDetector(
+                onTap: () => bag.removeItem(index),
+                child: const Icon(Icons.close, color: Colors.grey, size: 18),
+              ),
+              const SizedBox(height: 15),
 
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () => bag.updateQuantity(index, false),
-                  icon: const Icon(
-                    Icons.remove,
-                    size: 14,
-                    color: Color(0xFFC34A5E),
-                  ),
+              // Quantity Selector Box
+              Container(
+                height: 32,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFDF2F4),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-
-                Text(
-                  "${item.quantity}",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildQtyBtn(
+                      icon: Icons.remove,
+                      onTap: () => bag.updateQuantity(index, false),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Text(
+                        "${item.quantity}",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: Color(0xFFC34A5E),
+                        ),
+                      ),
+                    ),
+                    _buildQtyBtn(
+                      icon: Icons.add,
+                      onTap: () => bag.updateQuantity(index, true),
+                    ),
+                  ],
                 ),
-
-                IconButton(
-                  onPressed: () => bag.updateQuantity(index, true),
-                  icon: const Icon(
-                    Icons.add,
-                    size: 14,
-                    color: Color(0xFFC34A5E),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          IconButton(
-            onPressed: () => bag.removeItem(index),
-            icon: const Icon(Icons.close, color: Colors.redAccent, size: 20),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildQtyBtn({required IconData icon, required VoidCallback onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 30,
+        height: 32,
+        alignment: Alignment.center,
+        child: Icon(icon, size: 16, color: const Color(0xFFC34A5E)),
       ),
     );
   }
@@ -386,8 +376,6 @@ class Addtobagscreen extends StatelessWidget {
       ),
     );
   }
-
-  // Pehle function signature check karein ki 'context' wahan hai
 
   Widget _buildOrderSummary(BuildContext context, AddtobagProvider bag) {
     return Container(

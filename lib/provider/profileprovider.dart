@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileProvider extends ChangeNotifier {
+  bool isNotificationEnabled = true;
   String name = " ";
   int points = 2450;
   String tier = "TIER";

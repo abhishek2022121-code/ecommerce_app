@@ -19,27 +19,27 @@ class Cencelpage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFDF0F3), // Light pink background
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: false,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
-            size: 20,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          "Cancelled",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   centerTitle: false,
+      //   leading: IconButton(
+      //     icon: const Icon(
+      //       Icons.arrow_back_ios_new,
+      //       color: Colors.black,
+      //       size: 20,
+      //     ),
+      //     onPressed: () => Navigator.pop(context),
+      //   ),
+      //   title: const Text(
+      //     "Cancelled",
+      //     style: TextStyle(
+      //       color: Colors.black,
+      //       fontWeight: FontWeight.bold,
+      //       fontSize: 22,
+      //     ),
+      //   ),
+      // ),
       body: ListView.builder(
         padding: EdgeInsets.symmetric(
           horizontal: screenWidth * 0.05,

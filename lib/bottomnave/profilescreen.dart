@@ -1,7 +1,10 @@
 import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/bottomnave/wishlistscreen.dart';
+import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/constomappbar/costomloginappbar.dart';
 import 'package:ecomerce/loginmathod/signupscreen.dart';
 import 'package:ecomerce/profile/myorderscreen.dart';
+import 'package:ecomerce/profile/profiledetailscreen.dart';
 import 'package:ecomerce/profile/profilesettingpage.dart';
 import 'package:ecomerce/provider/profileprovider.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +14,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:shivam/prvider/profileprovider.dart';
 //import 'profile_provider.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool isNotificationEnabled = true;
 
   @override
   Widget build(BuildContext context) {
@@ -22,28 +32,48 @@ class ProfileScreen extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6EDEF),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 5,
-        leading: const Icon(Icons.menu, color: Color(0xFFC34A5E)),
-        centerTitle: true,
-        title: const Text(
-          "QUICK FASHION",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 12),
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Addtobagscreen()),
-                );
-              },
-              icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
-            ),
+      // backgroundColor: const Color(0xFFF6EDEF),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 5,
+      //   leading: Padding(
+      //     padding: const EdgeInsets.all(8.0),
+      //     child: Image.asset('assets/applogo.png'),
+      //   ),
+      //   centerTitle: true,
+      //   title: const Text(
+      //     "QUICK FASHION",
+      //     style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      //   ),
+      //   actions: [
+      //     Padding(
+      //       padding: EdgeInsets.only(right: 12),
+      //       child: IconButton(
+      //         onPressed: () {
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(builder: (context) => Addtobagscreen()),
+      //           );
+      //         },
+      //         icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
+      //       ),
+      //     ),
+      //   ],
+      // ),
+      backgroundColor: AppColors.scaffoldBg,
+      appBar: CustomLoginAppBar(
+        leadingIcon: Image.asset('assets/applogo.png'),
+        title: "QUICK FASHION",
+        onLeadingPressed: () => Navigator.pop(context),
+        customActions: [
+          IconButton(
+            icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Addtobagscreen()),
+              );
+            },
           ),
         ],
       ),
@@ -231,21 +261,21 @@ class ProfileScreen extends StatelessWidget {
                                   color: Colors.black87,
                                 ),
                               ),
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ProfileSettingPage(),
-                                    ),
-                                  );
-                                },
-                                icon: Icon(
-                                  Icons.settings,
-                                  color: Color(0xFFC34A5E),
-                                ),
-                              ),
+                              // IconButton(
+                              //   onPressed: () {
+                              //     Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             ProfileSettingPage(),
+                              //       ),
+                              //     );
+                              //   },
+                              //   icon: Icon(
+                              //     Icons.settings,
+                              //     color: Color(0xFFC34A5E),
+                              //   ),
+                              // ),
                             ],
                           ),
 
@@ -259,9 +289,9 @@ class ProfileScreen extends StatelessWidget {
                                 width: width,
                               ),
 
-                              SizedBox(width: width * 0.06),
+                              // SizedBox(width: width * 0.06),
 
-                              _infoBox(title: "TIER", value: "", width: width),
+                              // _infoBox(title: "TIER", value: "", width: width),
                             ],
                           ),
                         ],
@@ -322,12 +352,146 @@ class ProfileScreen extends StatelessWidget {
 
               SizedBox(height: height * 0.01),
 
-              _listTile(Icons.person_outline, "Profile Details"),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileDetailScreen(),
+                    ),
+                  );
+                },
+                child: _listTile(Icons.person_outline, "Profile Details"),
+              ),
               _listTile(Icons.location_on_outlined, "Address Book"),
               _listTile(Icons.notifications_none, "Notification Preferences"),
               _listTile(Icons.help_outline, "Help Center"),
 
               SizedBox(height: height * 0.02),
+              // 1. Pehle screen ke top par ek variable define kar lein (StatefulWidget ke andar)
+
+              // --- Aapka Task Code Start ---
+
+              // PREFERENCES SECTION
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 16, bottom: 8),
+                    child: Text(
+                      "PREFERENCES",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.1,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: [
+                        // Notifications Row
+                        _buildSettingsTile(
+                          icon: Icons.notifications_none_outlined,
+                          title: "Notifications",
+                          subtitle: "Sales, new drops, and status updates",
+                          trailing: Switch(
+                            value: isNotificationEnabled,
+                            activeColor: const Color(0xFFC34A5E),
+                            onChanged: (value) {
+                              setState(() {
+                                isNotificationEnabled = value;
+                                // Yaha aap notification ka logic add kar sakte hain
+                                print("Notifications: $isNotificationEnabled");
+                              });
+                            },
+                          ),
+                        ),
+                        _buildSettingsTile(
+                          icon: Icons.language_outlined,
+                          title: "Language",
+                          subtitle: "English (US)",
+                          trailing: const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        _buildSettingsTile(
+                          icon: Icons.palette_outlined,
+                          title: "Theme",
+                          subtitle: "System Default",
+                          trailing: const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: height * 0.03),
+
+              // SECURITY & PRIVACY SECTION
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 16, bottom: 8),
+                    child: Text(
+                      "SECURITY & PRIVACY",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.1,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: [
+                        _buildSettingsTile(
+                          icon: Icons.shield_outlined,
+                          title: "Privacy Dashboard",
+                          subtitle: "Manage your data and visibility",
+                          trailing: const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        _buildSettingsTile(
+                          icon: Icons.lock_outline,
+                          title: "Password & 2FA",
+                          subtitle: "Secure your fashion footprint",
+                          trailing: const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+              // --- Aapka Task Code End ---
+              //yaha add karna h
+              SizedBox(height: height * 0.04),
 
               GestureDetector(
                 onTap: () {
@@ -509,10 +673,13 @@ class ProfileScreen extends StatelessWidget {
 
   /// List Tile
   Widget _listTile(IconData icon, String title) {
-    return ListTile(
-      leading: Icon(icon, color: Color(0xFFC34A5E)),
-      title: Text(title),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+    return Card(
+      color: Colors.white,
+      child: ListTile(
+        leading: Icon(icon, color: Color(0xFFC34A5E)),
+        title: Text(title),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+      ),
     );
   }
 
@@ -562,6 +729,36 @@ class ProfileScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSettingsTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Widget trailing,
+  }) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: const Color(
+            0xFFFDF2F4,
+          ), // Light pink background jaisa image mein hai
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(icon, color: const Color(0xFFC34A5E), size: 24),
+      ),
+      title: Text(
+        title,
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: const TextStyle(color: Colors.grey, fontSize: 12),
+      ),
+      trailing: trailing,
     );
   }
 }

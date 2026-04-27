@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:ecomerce/bottomnave/navbaritems.dart';
+import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/constomappbar/costomloginappbar.dart';
 import 'package:ecomerce/provider/checkoutorderplacedsuccsefullyprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,23 +20,11 @@ class Checkoutorderplacedsuccessfulyscreen extends StatelessWidget {
     final double horizontalPadding = size.width * 0.06;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF9FA), // Soft theme background
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF8E213D)),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          "Check Out",
-          style: TextStyle(
-            color: Color(0xFF8E213D),
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-        ),
-        centerTitle: true,
+      backgroundColor: AppColors.scaffoldBg,
+      appBar: CustomLoginAppBar(
+        leadingIcon: const Icon(Icons.arrow_back_ios, color: Color(0xFFC34A5E)),
+        title: 'Check Out',
+        onLeadingPressed: () => Navigator.pop(context),
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -7,6 +7,14 @@ class ProductDetailsProvider extends ChangeNotifier {
 
   int quantity = 1;
 
+  // ✅ 1. RESET LOGIC: Naya product aane par ise call karenge
+  void resetQuantity() {
+    quantity = 1;
+    selectedSize = 'Small'; // Optional: Size bhi reset kar sakte hain
+    selectedColorIndex = 0; // Optional: Color bhi reset kar sakte hain
+    notifyListeners();
+  }
+
   void incrementQuantity() {
     quantity++;
     notifyListeners();
@@ -18,7 +26,6 @@ class ProductDetailsProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  // --- Naya Logic End ---
 
   final List<Color> productColors = [
     const Color(0xFFB03050),

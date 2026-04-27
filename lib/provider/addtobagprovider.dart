@@ -15,7 +15,6 @@ class BagItem {
     this.quantity = 1,
   });
 
-  // ✅ SAFE PRICE (NO CRASH with ₹ / text)
   double get totalPrice {
     final clean = basePrice.replaceAll(RegExp(r'[^0-9.]'), '');
     return (double.tryParse(clean) ?? 0) * quantity;
@@ -56,7 +55,6 @@ class AddtobagProvider extends ChangeNotifier {
     loadCart();
   }
 
-  // 🔥 LOAD CART (SAFE)
   Future<void> loadCart() async {
     final prefs = await SharedPreferences.getInstance();
     final data = prefs.getString('cart');
@@ -68,26 +66,30 @@ class AddtobagProvider extends ChangeNotifier {
     }
   }
 
-  // 🔥 SAVE CART
   Future<void> saveCart() async {
     final prefs = await SharedPreferences.getInstance();
     final data = jsonEncode(_items.map((e) => e.toJson()).toList());
     await prefs.setString('cart', data);
   }
 
-  // ✅ ADD ITEM (NO REPLACE)
-  // ✅ ADD ITEM (Ab ye selected quantity ke sath add karega)
   void addItem(String name, String price, String image, int selectedQuantity) {
-    _items.add(
-      BagItem(
-        id: DateTime.now().toString(),
-        name: name,
-        category: "",
-        basePrice: price,
-        image: image,
-        quantity: selectedQuantity, // <--- Yaha quantity set karein
-      ),
-    );
+    int index = _items.indexWhere((item) => item.name == name);
+
+    if (index != -1) {
+      _items[index].quantity = selectedQuantity;
+    } else {
+      _items.insert(
+        0,
+        BagItem(
+          id: DateTime.now().toString(),
+          name: name,
+          category: "",
+          basePrice: price,
+          image: image,
+          quantity: selectedQuantity,
+        ),
+      );
+    }
 
     saveCart();
     notifyListeners();

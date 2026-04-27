@@ -1,4 +1,5 @@
 import 'package:ecomerce/addtobag/addtobagscreen.dart';
+import 'package:ecomerce/constomappbar/costomsearchappbar.dart';
 import 'package:ecomerce/datilepage/detailescren.dart';
 import 'package:ecomerce/productlisting/iteamcollections.dart';
 import 'package:ecomerce/productlisting/womenscreen.dart';
@@ -14,8 +15,6 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
-  bool isSearching = false;
-  final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -23,69 +22,16 @@ class _HomescreenState extends State<Homescreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFFDF7F8),
 
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFFDF7F8),
-        elevation: 4.0,
-        shadowColor: Colors.black.withOpacity(0.3),
-        centerTitle: true,
-
-        leading: isSearching
-            ? IconButton(
-                icon: const Icon(Icons.close, color: Color(0xFFC34A5E)),
-                onPressed: () {
-                  setState(() {
-                    isSearching = false;
-                    _searchController.clear();
-                  });
-                },
-              )
-            : Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset('assets/applogo.png'),
-              ),
-        title: isSearching
-            ? TextField(
-                controller: _searchController,
-                autofocus: true,
-                style: const TextStyle(color: Color(0xFF4A3239)),
-                decoration: const InputDecoration(
-                  hintText: "Search items...",
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(color: Colors.grey),
-                ),
-              )
-            : const Text(
-                "QUICK FASHION",
-                style: TextStyle(
-                  color: Color(0xFF4A3239),
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                ),
-              ),
-
-        actions: [
-          if (!isSearching)
-            IconButton(
-              icon: const Icon(Icons.search, color: Color(0xFFC34A5E)),
-              onPressed: () {
-                setState(() {
-                  isSearching = true;
-                });
-              },
-            ),
-          const SizedBox(width: 5),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Addtobagscreen()),
-              );
-            },
-            icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
-          ),
-          const SizedBox(width: 15),
-        ],
+      appBar: CustomSearchAppBar(
+        title: 'QUICK FASHION',
+        onBagPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Addtobagscreen()),
+          );
+        },
       ),
+
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -882,6 +828,7 @@ class _HomescreenState extends State<Homescreen> {
                     image: "assets/girl.png",
                     name: 'Pure Linen Shirt',
                     price: '1,299',
+                    id: 'q1',
                   ),
                 ),
               );

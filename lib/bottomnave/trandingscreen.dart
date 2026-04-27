@@ -1,5 +1,6 @@
 import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/constomappbar/costomsearchappbar.dart';
 import 'package:ecomerce/datilepage/detailescren.dart';
 import 'package:ecomerce/provider/wishlistprovider.dart';
 import 'package:flutter/material.dart';
@@ -12,40 +13,14 @@ class TrendingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFDF7F8),
-
-      appBar: AppBar(
-        backgroundColor: ColorStyle.scaffoldBg,
-        elevation: 4.0,
-
-        shadowColor: AppColors.black.withOpacity(0.3),
-
-        centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/applogo.png'),
-        ),
-        title: const Text(
-          "QUICK FASHION",
-          style: TextStyle(
-            color: ColorStyle.textPrimary,
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-          ),
-        ),
-        actions: [
-          Icon(Icons.search, color: Color(0xFFC34A5E)),
-          SizedBox(width: 15),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Addtobagscreen()),
-              );
-            },
-            icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
-          ),
-          SizedBox(width: 15),
-        ],
+      appBar: CustomSearchAppBar(
+        title: 'QUICK FASHION',
+        onBagPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Addtobagscreen()),
+          );
+        },
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -96,6 +71,7 @@ class TrendingScreen extends StatelessWidget {
                               image: 'assets/girl.png',
                               name: "Cloud Knit Set",
                               price: "₹250",
+                              id: '123',
                             ),
                           ),
                         );
@@ -120,6 +96,7 @@ class TrendingScreen extends StatelessWidget {
                               image: 'assets/girl.png',
                               name: 'Prism Shades',
                               price: '₹180',
+                              id: 'qwj3',
                             ),
                           ),
                         );
@@ -214,6 +191,7 @@ class TrendingScreen extends StatelessWidget {
                           image: 'assets/girl.png',
                           name: 'product 1',
                           price: '₹500',
+                          id: 'xnce',
                         ),
                       ),
                     );

@@ -640,7 +640,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: Icon(Icons.arrow_back, color: Color(0xFFC34A5E)),
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: Color(0xFFC34A5E),
+                        ),
                       ),
 
                       Text(
@@ -648,7 +651,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
-                          color: Colors.redAccent,
+                          color: Color(0xFFC34A5E),
                         ),
                       ),
 
@@ -665,29 +668,34 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                   SizedBox(height: 20),
 
                   /// Subtitle
-                  Text(
+                  const Text(
                     "SHOPPING ACTIVITY",
                     style: TextStyle(
-                      fontSize: 12,
-                      letterSpacing: 1.2,
-                      color: Colors.redAccent,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-
-                  SizedBox(height: 10),
-
-                  /// Title
-                  Text(
-                    "Track Your Style\nJourney",
-                    style: TextStyle(
-                      fontSize: 32,
+                      color: Color(0xFFC3374E),
+                      fontSize: 10,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF4A0F1A),
+                      letterSpacing: 1.2,
                     ),
                   ),
-
-                  SizedBox(height: 25),
+                  const SizedBox(height: 8),
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w900,
+                        color: const Color(0xFF4A0E1E),
+                        height: 1.1,
+                      ),
+                      children: const [
+                        TextSpan(text: "Track Your "),
+                        TextSpan(
+                          text: "Style\nJourney",
+                          style: TextStyle(color: Color(0xFFC3374E)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
 
                   /// 🟢 TAB BAR
                   SingleChildScrollView(

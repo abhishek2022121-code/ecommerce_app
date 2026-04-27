@@ -1,6 +1,8 @@
 import 'package:ecomerce/addtobag/addtobagscreen.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/constomappbar/costomsearchappbar.dart';
 import 'package:ecomerce/datilepage/detailescren.dart';
+import 'package:ecomerce/productlisting/iteamcollections.dart';
 import 'package:ecomerce/provider/wishlistprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,44 +24,17 @@ class Wishlistscreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFDF7F8),
-
-      appBar: AppBar(
-        backgroundColor: ColorStyle.scaffoldBg,
-        elevation: 4.0,
-
-        shadowColor: AppColors.black.withOpacity(0.3),
-
-        centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/applogo.png'),
-        ),
-        title: const Text(
-          "QUICK FASHION",
-          style: TextStyle(
-            color: ColorStyle.textPrimary,
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-          ),
-        ),
-        actions: [
-          Icon(Icons.search, color: Color(0xFFC34A5E)),
-          SizedBox(width: 15),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Addtobagscreen()),
-              );
-            },
-            icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
-          ),
-          SizedBox(width: 15),
-        ],
+      appBar: CustomSearchAppBar(
+        title: 'QUICK FASHION',
+        onBagPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Addtobagscreen()),
+          );
+        },
       ),
-
       body: items.isEmpty
-          ? _buildEmptyState()
+          ? _buildEmptyState(context)
           : SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Padding(
@@ -137,6 +112,7 @@ class Wishlistscreen extends StatelessWidget {
                                   image: product.image,
                                   name: product.name,
                                   price: product.price,
+                                  id: product.id,
                                 ),
                               ),
                             );
@@ -157,22 +133,99 @@ class Wishlistscreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.favorite_border, size: 80, color: AppColors.unselected),
-          const SizedBox(height: 20),
-          const Text(
-            "Your wishlist is empty!",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: ColorStyle.textPrimary,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Circular Icon Background
+            Container(
+              height: 120,
+              width: 120,
+              decoration: const BoxDecoration(
+                color: Color(0xFFF0808F), // Screenshot pink shade
+                shape: BoxShape.circle,
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.favorite_border,
+                  size: 50,
+                  color: Colors.white,
+                ),
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 30),
+            // Heading Text
+            const Text(
+              "Nothing in Your Wishlist",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF332F32), // Dark text color
+              ),
+            ),
+            const SizedBox(height: 12),
+            // Subtitle Text
+            const Text(
+              "Save the looks you love and curate your dream closet.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 15,
+                color: Color(0xFF8E7D84), // Greyish text color
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 40),
+            // Gradient Button
+            Container(
+              width: double.infinity,
+              height: 55,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFC34A5E), Color(0xFFE88A98)],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFC34A5E).withOpacity(0.3),
+                    blurRadius: 10,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: ElevatedButton(
+                onPressed: () {
+                  print('object');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Iteamcollections()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: const Text(
+                  "START SHOPPING",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

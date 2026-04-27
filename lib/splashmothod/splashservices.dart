@@ -10,13 +10,13 @@ class Splashservices {
 
     if (isLogin != null && isLogin == true) {
       // GREEN SNACKBAR
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Login Successful'),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 1),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('Login Successful'),
+      //     backgroundColor: Colors.green,
+      //     duration: Duration(seconds: 1),
+      //   ),
+      // );
 
       await Future.delayed(const Duration(seconds: 1));
 

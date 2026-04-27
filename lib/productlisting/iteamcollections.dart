@@ -101,6 +101,7 @@ class Iteamcollections extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProductDetailScreen(
+                      id: 'dress_001', // Unique ID khud se dein
                       image: 'assets/girl.png',
                       name: 'Sunset Silk Maxi Dress',
                       price: '310',

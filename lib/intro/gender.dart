@@ -1,5 +1,6 @@
 import 'package:ecomerce/colorce/appcolors.dart';
 import 'package:ecomerce/bottomnave/navbaritems.dart';
+import 'package:ecomerce/constomappbar/costomloginappbar.dart';
 import 'package:ecomerce/intro/ageselect.dart';
 import 'package:ecomerce/intro/longaugescreen.dart';
 import 'package:ecomerce/l10n/app_localizations.dart';
@@ -21,27 +22,12 @@ class SelectGender extends StatelessWidget {
     const String maleImageUrl = 'assets/male.png';
 
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 4.0,
-
-        shadowColor: AppColors.black.withOpacity(0.3),
-        // elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.close, color: AppColors.textPrimary),
-        ),
-        title: Text(
-          l10n.genderStep,
-          style: const TextStyle(
-            color: AppColors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
+      backgroundColor: AppColors.scaffoldBg,
+      appBar: CustomLoginAppBar(
+        leadingIcon: const Icon(Icons.close, color: AppColors.textPrimary),
+        title: l10n.appTitle,
+        onLeadingPressed: () => Navigator.pop(context),
+        customActions: [
           TextButton(
             onPressed: () {
               Navigator.pushReplacement(
@@ -50,7 +36,7 @@ class SelectGender extends StatelessWidget {
               );
             },
             child: Text(
-              l10n.btnSkip,
+              l10n.btnSkip, // Localized
               style: const TextStyle(
                 color: AppColors.primary,
                 fontWeight: FontWeight.bold,

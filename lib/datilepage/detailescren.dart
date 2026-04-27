@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:ecomerce/addtobag/addtobagscreen.dart';
+import 'package:ecomerce/chechoutpage/checkoutscreen.dart';
 import 'package:ecomerce/colorce/appcolors.dart';
+import 'package:ecomerce/constomappbar/costomsearchappbar.dart';
 import 'package:ecomerce/productlisting/iteamcollections.dart';
 import 'package:ecomerce/provider/addtobagprovider.dart';
 import 'package:ecomerce/provider/productdetaileprovider.dart';
@@ -15,9 +17,10 @@ class ProductDetailScreen extends StatefulWidget {
   String image;
   String name;
   String price;
+  String id;
   ProductDetailScreen({
     super.key,
-
+    required this.id,
     required this.image,
     required this.name,
     required this.price,
@@ -30,6 +33,17 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _currentIndex = 0;
   bool isAddedToBag = false;
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ProductDetailsProvider>(
+        context,
+        listen: false,
+      ).resetQuantity();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,47 +52,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFDF7F8),
-
-      appBar: AppBar(
-        backgroundColor: ColorStyle.scaffoldBg,
-        elevation: 4.0,
-
-        shadowColor: AppColors.black.withOpacity(0.3),
-
-        centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-
-            icon: Icon(Icons.arrow_back_ios, color: Color(0xFFC34A5E)),
-          ),
+      appBar: CustomSearchAppBar(
+        title: 'QUICK FASHION',
+        leadingWidget: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Color(0xFFC34A5E)),
+          onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "QUICK FASHION",
-          style: TextStyle(
-            color: ColorStyle.textPrimary,
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-          ),
-        ),
-        actions: [
-          Icon(Icons.search, color: Color(0xFFC34A5E)),
-          SizedBox(width: 15),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Addtobagscreen()),
-              );
-            },
-            icon: Icon(Icons.shopping_bag_outlined, color: Color(0xFFC34A5E)),
-          ),
-          SizedBox(width: 15),
-        ],
+        onBagPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Addtobagscreen()),
+          );
+        },
       ),
+
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -676,7 +663,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         children: [
           // --- 1. Wishlist Button (Hamesha dikhega) ---
           _buildSquareIconButton(
-            icon: Provider.of<WishlistProvider>(context).isFavorite(widget.name)
+            // 1. Icon check karne ke liye widget.id use karein
+            icon: context.watch<WishlistProvider>().isFavorite(widget.id)
                 ? Icons.favorite
                 : Icons.favorite_border,
             color: primaryColor,
@@ -685,16 +673,22 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 context,
                 listen: false,
               );
+
+              // 2. Product object mein bhi id: widget.id hona chahiye
               final product = Product(
-                id: widget.name,
+                id: widget.id,
                 name: widget.name,
                 price: widget.price,
                 image: widget.image,
                 brand: "Quick Fashion",
               );
+
               wishlistProvider.toggleWishlist(product);
 
-              final bool isAdded = wishlistProvider.isFavorite(product.id);
+              // 3. Status check (SnackBar ke liye) bhi id par karein
+              final bool isAdded = wishlistProvider.isFavorite(widget.id);
+
+              ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
@@ -761,26 +755,26 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             _buildSquareIconButton(
               icon: Icons.shopping_bag_outlined,
               onTap: () {
-                final bag = Provider.of<AddtobagProvider>(
-                  context,
-                  listen: false,
-                );
+                // final bag = Provider.of<AddtobagProvider>(
+                //   context,
+                //   listen: false,
+                // );
 
-                bag.addItem(
-                  widget.name,
-                  widget.price,
-                  widget.image,
-                  provider.quantity,
-                );
+                // bag.addItem(
+                //   widget.name,
+                //   widget.price,
+                //   widget.image,
+                //   provider.quantity,
+                // );
 
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => Addtobagscreen(
-                      image: widget.image,
-                      name: widget.name,
-                      price: widget.price,
-                      quantity: provider.quantity,
+                      // image: widget.image,
+                      // name: widget.name,
+                      // price: widget.price,
+                      // quantity: provider.quantity,
                     ),
                   ),
                 );
@@ -796,7 +790,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               height: 50,
               padding: const EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
-                color: lightPink,
+                color:
+                    lightPink, // Make sure lightPink is defined in your constants
                 borderRadius: BorderRadius.circular(25),
               ),
               child: Row(
@@ -809,16 +804,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       size: 20,
                     ),
                     onPressed: () {
-                      // 1. Local quantity kam karo (ProductDetailProvider)
-                      provider.decrementQuantity();
+                      // Check: Sirf tabhi kam karo jab quantity 1 se zyada ho
+                      if (provider.quantity > 1) {
+                        // 1. Local quantity kam karo
+                        provider.decrementQuantity();
 
-                      // 2. Bag Provider mein bhi update karo
-                      final bag = Provider.of<AddtobagProvider>(
-                        context,
-                        listen: false,
-                      );
-                      // Check karo agar item bag mein hai toh wahan bhi quantity update ho jaye
-                      bag.updateQuantityByName(widget.name, provider.quantity);
+                        // 2. Bag Provider mein sync karo
+                        final bag = Provider.of<AddtobagProvider>(
+                          context,
+                          listen: false,
+                        );
+                        bag.updateQuantityByName(
+                          widget.name,
+                          provider.quantity,
+                        );
+                      }
                     },
                   ),
                   Padding(
@@ -856,33 +856,37 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             Expanded(
               child: InkWell(
                 onTap: () {
-                  // final bag = Provider.of<AddtobagProvider>(
-                  //   context,
-                  //   listen: false,
-                  // );
-
-                  // bag.addItem(
-                  //   widget.name,
-                  //   widget.price,
-                  //   widget.image,
-                  //   provider.quantity, // <--- Ye pass karein
-                  // );
-
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => Addtobagscreen(
-                        // image: widget.image,
-                        // name: widget.name,
-                        // price: widget.price,
-                        // quantity: provider
-                        //     .quantity, // <--- Screen constructor me bhi pass karein
-                      ),
-                    ),
+                    MaterialPageRoute(builder: (context) => Checkoutscreen()),
                   );
+                  // // final bag = Provider.of<AddtobagProvider>(
+                  // //   context,
+                  // //   listen: false,
+                  // // );
+
+                  // // bag.addItem(
+                  // //   widget.name,
+                  // //   widget.price,
+                  // //   widget.image,
+                  // //   provider.quantity, // <--- Ye pass karein
+                  // // );
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => Addtobagscreen(
+                  //       // image: widget.image,
+                  //       // name: widget.name,
+                  //       // price: widget.price,
+                  //       // quantity: provider
+                  //       //     .quantity, // <--- Screen constructor me bhi pass karein
+                  //     ),
+                  //   ),
+                  // );
                 },
                 child: Container(
-                  height: 50,
+                  height: 45,
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       colors: [Color(0xFF9E2A47), Color(0xFFD65A74)],
@@ -898,7 +902,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 15,
+                        fontSize: 13,
                         letterSpacing: 0.5,
                       ),
                     ),

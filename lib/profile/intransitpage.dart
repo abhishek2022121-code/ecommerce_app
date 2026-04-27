@@ -1,3 +1,4 @@
+import 'package:ecomerce/orderdetaile/orderdetailscreen.dart';
 import 'package:flutter/material.dart';
 
 class Intransitpage extends StatelessWidget {
@@ -174,7 +175,12 @@ class Intransitpage extends StatelessWidget {
             width: double.infinity,
             height: 48,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OrderDetailsScreen()),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 backgroundColor: const Color(0xFFFFE4E9),
